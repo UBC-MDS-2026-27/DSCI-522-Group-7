@@ -5,6 +5,9 @@ import re
 # Load the raw data
 raw_df = pd.read_csv('./data/raw/bridge_data_raw.csv')
 
+# Filter for Bridges only
+processed_df = raw_df[raw_df['CATEGORY'] == 'Bridge']
+
 # Rename to use snake case for consistency
 rename_map = {
     "ID (SITE Ndeg)": "site_id",
@@ -36,6 +39,20 @@ processed_df = raw_df.rename(columns=rename_map)
 
 # Drop rows that don't have a CURRENT_BCI (target), 52 rows
 processed_df = processed_df.dropna(subset=['current_bci'])
+
+# Columns to drop
+drop_columns = [
+    'site_id',
+    'structure_name',
+    'french_name',
+    'highway_name',
+    'latitude',
+    'longitude',
+    '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012',
+    '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003',
+    '2002', '2001', '2000'
+]
+processed_df = processed_df.drop(columns=drop_columns)
 
 # Create target variable
 processed_df['rehab_soon'] = (processed_df['current_bci'] < 70).astype(int)
@@ -74,6 +91,23 @@ def extract_span_summary(val):
 processed_df[['span_total_m', 'span_count', 'span_max_m', 'span_mean_m', 'span_std_m']] = (
     processed_df['span_details_m'].apply(extract_span_summary)
 )
+
+# Group together materials
+low_count_materials = [
+    'Unknown',
+    'Engineered Wood (Psl, etc.)',
+    'Mass Concrete',
+    'Plastic/Geogrid/Geocell',
+    'Glue Laminated Wood',
+    'Masonry/Block/Rock'
+]
+processed_df['material'] = processed_df['material'].replace(low_count_materials, 'Other')
+
+# Feature Engineering
+processed_df['age'] = 2020 - processed_df['year_built']
+
+processed_df['years_since_last_rehab_major'] = 2020 - processed_df['last_major_rehab'].fillna(processed_df['year_built'])
+processed_df['years_since_last_rehab_minor'] = 2020 - processed_df['last_minor_rehab'].fillna(processed_df['year_built'])
 
 # Save the processed dataframe
 processed_df.to_csv('./data/processed/bridge_data_processed.csv')
