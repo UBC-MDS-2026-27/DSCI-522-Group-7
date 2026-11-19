@@ -35,24 +35,10 @@ rename_map = {
     "CURRENT BCI": "current_bci",
 }
 
-processed_df = raw_df.rename(columns=rename_map)
+processed_df = processed_df.rename(columns=rename_map)
 
 # Drop rows that don't have a CURRENT_BCI (target), 52 rows
 processed_df = processed_df.dropna(subset=['current_bci'])
-
-# Columns to drop
-drop_columns = [
-    'site_id',
-    'structure_name',
-    'french_name',
-    'highway_name',
-    'latitude',
-    'longitude',
-    '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012',
-    '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003',
-    '2002', '2001', '2000'
-]
-processed_df = processed_df.drop(columns=drop_columns)
 
 # Create target variable
 processed_df['rehab_soon'] = (processed_df['current_bci'] < 70).astype(int)
@@ -109,5 +95,27 @@ processed_df['age'] = 2020 - processed_df['year_built']
 processed_df['years_since_last_rehab_major'] = 2020 - processed_df['last_major_rehab'].fillna(processed_df['year_built'])
 processed_df['years_since_last_rehab_minor'] = 2020 - processed_df['last_minor_rehab'].fillna(processed_df['year_built'])
 
+
+# Columns to drop
+drop_columns = [
+    'category',
+    '_id',
+    'site_id',
+    'structure_name',
+    'french_name',
+    'highway_name',
+    'latitude',
+    'longitude',
+    '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012',
+    '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003',
+    '2002', '2001', '2000',
+    'year_built',
+    'last_major_rehab',
+    'last_minor_rehab',
+    'num_spans_cells',
+    'span_details_m',
+    'last_inspection_date'
+]
+processed_df = processed_df.drop(columns=drop_columns)
 # Save the processed dataframe
-processed_df.to_csv('./data/processed/bridge_data_processed.csv')
+processed_df.to_csv('./data/processed/bridge_data_processed.csv', index=False)
