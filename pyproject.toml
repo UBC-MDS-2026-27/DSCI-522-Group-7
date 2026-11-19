@@ -8,6 +8,15 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "altair>=6.3.0",
+    "ipykernel>=7.4.0",
+    "nbclient>=0.11.0",
     "numpy>=2.5.5",
     "pandas>=3.1.1",
+    "pyarrow>=26.0.1",
+    "pyyaml>=6.0.3",
+    "requests>=2.34.2",
+    "scikit-learn>=1.9.1",
+    "vegafusion>=2.0.3",
+    "vl-convert-python>=1.9.0.post1",
 ]
