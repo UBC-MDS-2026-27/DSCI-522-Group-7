@@ -1,0 +1,8 @@
+version = 1
+revision = 3
+requires-python = ">=3.14"
+
+[[package]]
+name = "dsci-522-group-7"
+version = "0.1.0"
+source = { editable = "." }

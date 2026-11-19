@@ -1,0 +1,17 @@
+[project]
+name = "dsci-522-group-7"
+version = "0.1.0"
+description = "Can we predict whether an Ontario bridge needs rehabilitation soon (BCI < 70) from its age, material, structure type, size, region, and years since its last rehab?"
+readme = "README.md"
+authors = [
+    { name = "jaredc", email = "jaredc28@student.ubc.ca" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+dsci-522-group-7 = "dsci_522_group_7:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
