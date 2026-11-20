@@ -218,3 +218,197 @@ table_5.columns = ["Number of bridges", "Proportion needing rehabilitation soon"
 
 table_5
 ```
+
+Figure 1: Distribution of Ontario bridge age by rehabilitation need in the training data.
+
+```{python}
+import altair as alt
+import pandas as pd
+train_df = pd.read_csv("DSCI-522-Group-7/data/processed/train_df.csv")
+age_plot = alt.Chart(train_df).mark_boxplot().encode(
+    x=alt.X(
+        "rehab_soon:N",
+        title="Rehabilitation Status",
+        axis=alt.Axis(
+            labelExpr="datum.value == 0 ? 'No Rehab ' : 'Rehab Needed'",
+            labelAngle=0
+        )
+    ),
+    y=alt.Y(
+        "age:Q",
+        title="Bridge Age"
+    )
+).properties(
+    title="Ontario Bridge Rehabilitation Needs",
+    width=450,
+    height=300
+)
+
+age_plot
+```
+
+
+
+
+Figure 2: Percentage of Ontario bridges requiring rehabilitation among the five most common construction materials in the training data.
+
+```{python}
+# Select the 5 most common bridge materials
+top_materials = train_df["material"].value_counts().head(5).index
+material_df = train_df[train_df["material"].isin(top_materials)].copy()
+
+# Shorten material names for the graph
+material_df["material_short"] = material_df["material"].replace({
+    "Reinforced Cast-In-Place Concrete": "Reinforced",
+    "Prestressed Precast Concrete": "Prestressed",
+    "Post-Tensioned Cast-In-Place Concrete": "Post-Tensioned"
+})
+
+# Create Figure 2
+material_plot = alt.Chart(material_df).mark_bar().encode(
+    x=alt.X(
+        "mean(rehab_soon):Q",
+        title="Bridges Needing Rehabilitation",
+        axis=alt.Axis(format=".0%")
+    ),
+    y=alt.Y(
+        "material_short:N",
+        title="Concrete Material",
+        sort="-x"
+    ),
+    tooltip=[
+        alt.Tooltip("material:N", title="Full Material Name"),
+        alt.Tooltip(
+            "mean(rehab_soon):Q",
+            title="Rehabilitation Rate",
+            format=".1%"
+        ),
+        alt.Tooltip("count():Q", title="Number of Bridges")
+    ]
+).properties(
+    title="Ontario Bridge Rehabilitation Needs by Material",
+    width=450,
+    height=250
+)
+
+material_plot
+```
+
+
+
+
+
+
+
+Figure 3: Distribution of bridge lengths by rehabilitation status for Ontario bridges up to 300 metres, using training data.
+
+```{python}
+# Prepare bridge length data
+length_df = train_df[["length_m", "rehab_soon"]].dropna().copy()
+
+length_df = length_df[
+    (length_df["length_m"] > 0) &
+    (length_df["length_m"] <= 300)
+]
+
+length_df["Rehabilitation Status"] = length_df["rehab_soon"].map({
+    0: "No Rehab Needed",
+    1: "Rehab Needed"
+})
+
+# Create Figure 3: Violin plot
+violin_plot = alt.Chart(length_df).transform_density(
+    "length_m",
+    as_=["Bridge Length", "Density"],
+    groupby=["Rehabilitation Status"]
+).mark_area(orient="horizontal").encode(
+    x=alt.X(
+        "Density:Q",
+        stack="center",
+        axis=None,
+        title=None
+    ),
+    y=alt.Y(
+        "Bridge Length:Q",
+        title="Bridge Length (m)"
+    ),
+    column=alt.Column(
+        "Rehabilitation Status:N",
+        title=None
+    ),
+    color=alt.Color(
+        "Rehabilitation Status:N",
+        legend=None
+    )
+).properties(
+    title=  "Ontario Bridge Length's Rehabilitation Status",
+
+
+    width=200,
+    height=350
+)
+
+violin_plot
+```
+
+
+
+
+
+Figure 4: Density distribution of Bridge Condition Index (BCI) for all Ontario bridges in the training data. The dashed line at BCI = 70 indicates the rehabilitation threshold.
+
+```{python}
+# Create Figure 4: BCI density distribution
+bci_density = alt.Chart(train_df).transform_density(
+    "current_bci",
+    as_=["BCI", "Density"]
+).mark_area(
+    color="#929292",
+    opacity=0.6,
+    line={"color": "#333333"}
+).encode(
+    x=alt.X(
+        "BCI:Q",
+        title="Bridge Condition Index (BCI)",
+        axis=alt.Axis(values=[0, 20, 40, 60, 80, 100]),
+        scale=alt.Scale(domain=[0, 100])
+    ),
+    y=alt.Y(
+        "Density:Q",
+        title="Density"
+    )
+)
+
+# Add rehabilitation threshold at BCI = 70
+threshold = alt.Chart(
+    pd.DataFrame({"BCI": [70]})
+).mark_rule(
+    color="#333333",
+    strokeDash=[6, 4],
+    strokeWidth=2
+).encode(
+    x="BCI:Q"
+)
+
+# Combine density plot and threshold
+bci_plot = (bci_density + threshold).properties(
+    title="Ontario Bridge Condition Index Distribution",
+    width=550,
+    height=300
+)
+
+bci_plot
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
