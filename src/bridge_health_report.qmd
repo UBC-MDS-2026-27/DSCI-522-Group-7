@@ -31,7 +31,7 @@ with open("../data/raw/bridge_data_raw.csv", 'wb') as f:
     f.write(request.content)
 
 # Load the raw data
-raw_df = pd.read_csv('./data/raw/bridge_data_raw.csv')
+raw_df = pd.read_csv('../data/raw/bridge_data_raw.csv')
 
 # Filter for Bridges only
 processed_df = raw_df[raw_df['CATEGORY'] == 'Bridge']
@@ -146,7 +146,7 @@ drop_columns = [
 ]
 processed_df = processed_df.drop(columns=drop_columns)
 # Save the processed dataframe
-processed_df.to_csv('./data/processed/bridge_data_processed.csv', index=False)
+processed_df.to_csv('../data/processed/bridge_data_processed.csv', index=False)
 ```
 
 ```{python}
@@ -155,8 +155,8 @@ train_df, test_df = train_test_split(
     processed_df, train_size=0.70, stratify=processed_df["rehab_soon"], random_state=522
 )
 
-train_df.to_csv("./data/processed/train_df.csv")
-test_df.to_csv("./data/processed/test_df.csv")
+train_df.to_csv("../data/processed/train_df.csv", index=False)
+test_df.to_csv("../data/processed/test_df.csv", index=False)
 ```
 
 Table 1: Number and proportion of bridges in the training data that need rehabilitation soon (BCI below 70).
