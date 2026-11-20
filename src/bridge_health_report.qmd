@@ -158,3 +158,63 @@ train_df, test_df = train_test_split(
 train_df.to_csv("./data/processed/train_df.csv")
 test_df.to_csv("./data/processed/test_df.csv")
 ```
+
+Table 1: Number and proportion of bridges in the training data that need rehabilitation soon (BCI below 70).
+```{python}
+# EDA Summary Tables
+# Make Table 1 which shows how many bridges in the training data need rehab, and how many don't.
+table_1 = train_df["rehab_soon"].value_counts().sort_index().to_frame()
+table_1["Proportion"] = (table_1["count"] / len(train_df)).round(2)
+
+table_1.index = ["No", "Yes"]
+table_1.index.name = "Needs rehabilitation soon"
+table_1.columns = ["Number of bridges", "Proportions"]
+
+table_1
+```
+
+Table 2: Avergage age, years since last major rehab, and size of bridges in the training data that, by whether they need rehabilitation soon.
+```{python}
+# Make Table 2 which shows if bridges that need rehabilitation are different from ones that don't in age, time since last rehab, and size.
+table_2 = train_df.groupby("rehab_soon")[["age", "years_since_last_rehab_major", "width_m", "length_m"]].mean().round(1)
+
+table_2.index = ["No", "Yes"]
+table_2.index.name = "Needs rehabilitation soon"
+table_2.columns = ["Age (years)", "Years since last major rehab", "Width (m)", "Length (m)"]
+
+
+table_2
+```
+
+Table 3: Number of bridges and proportion needing rehabilitation soon in the training data, by material.
+```{python}
+# Make Table 3 which shows if bridges that need rehabilitation differ by material.
+table_3 = train_df.groupby("material")["rehab_soon"].agg(["count", "mean"]).round(2)
+
+table_3.index.name = "Material"
+table_3.columns = ["Number of bridges", "Proportion needing rehabilitation soon"]
+
+table_3
+```
+
+Table 4: Number of brudges and proportion needing rehabilitation soon in the training data, by structure type.
+```{python}
+# Make Table 4 which shows if a bridge needs rehabilitation soon depending on its structure type.
+table_4 = train_df.groupby("structure_type")["rehab_soon"].agg(["count", "mean"]).round(2)
+
+table_4.index.name = "Structure type"
+table_4.columns = ["Number of bridges", "Proportion needing rehabilitation soon"]
+
+table_4
+```
+
+Table 5: Number of bridges and proportion needing rehabilitation soon in the training data, by region.
+```{python}
+# Make Table 5 which shows if bridges needing rehabilitation differ by region.
+table_5 = train_df.groupby("region")["rehab_soon"].agg(["count", "mean"]).round(2)
+
+table_5.index.name = "Region"
+table_5.columns = ["Number of bridges", "Proportion needing rehabilitation soon"]
+
+table_5
+```
