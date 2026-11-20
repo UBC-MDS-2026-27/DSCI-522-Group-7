@@ -8,6 +8,7 @@ jupyter: python3
 ```{python}
 import os
 import pandas as pd
+import altair as alt
 import numpy as np
 import re
 import requests
@@ -222,9 +223,8 @@ table_5
 Figure 1: Distribution of Ontario bridge age by rehabilitation need in the training data.
 
 ```{python}
-import altair as alt
-import pandas as pd
-train_df = pd.read_csv("DSCI-522-Group-7/data/processed/train_df.csv")
+
+
 age_plot = alt.Chart(train_df).mark_boxplot().encode(
     x=alt.X(
         "rehab_soon:N",
@@ -236,7 +236,7 @@ age_plot = alt.Chart(train_df).mark_boxplot().encode(
     ),
     y=alt.Y(
         "age:Q",
-        title="Bridge Age"
+        title="Bridge Age (years)"
     )
 ).properties(
     title="Ontario Bridge Rehabilitation Needs",
@@ -257,11 +257,11 @@ Figure 2: Percentage of Ontario bridges requiring rehabilitation among the five 
 top_materials = train_df["material"].value_counts().head(5).index
 material_df = train_df[train_df["material"].isin(top_materials)].copy()
 
-# Shorten material names for the graph
+# Shorten material names while preserving concrete types
 material_df["material_short"] = material_df["material"].replace({
-    "Reinforced Cast-In-Place Concrete": "Reinforced",
-    "Prestressed Precast Concrete": "Prestressed",
-    "Post-Tensioned Cast-In-Place Concrete": "Post-Tensioned"
+    "Reinforced Cast-In-Place Concrete": "Reinforced concrete (cast-in-place)",
+    "Prestressed Precast Concrete": "Prestressed concrete (precast)",
+    "Post-Tensioned Cast-In-Place Concrete": "Post-tensioned concrete (cast-in-place)"
 })
 
 # Create Figure 2
@@ -273,7 +273,7 @@ material_plot = alt.Chart(material_df).mark_bar().encode(
     ),
     y=alt.Y(
         "material_short:N",
-        title="Concrete Material",
+        title="Material",
         sort="-x"
     ),
     tooltip=[
@@ -341,7 +341,7 @@ violin_plot = alt.Chart(length_df).transform_density(
         legend=None
     )
 ).properties(
-    title=  "Ontario Bridge Length's Rehabilitation Status",
+    title="Ontario Bridge Length by Rehabilitation Status",
 
 
     width=200,
