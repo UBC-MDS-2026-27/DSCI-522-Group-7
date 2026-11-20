@@ -11,8 +11,24 @@ import pandas as pd
 import numpy as np
 import re
 import requests
+from sklearn.compose import make_column_transformer, make_column_selector
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.dummy import DummyClassifier
+from sklearn.model_selection import cross_validate
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
+
 ```
 
+# Summary
+
+# Introduction
+
+# Methods
 ## Data
 The dataset used for this project comes from the Government of Ontario. It was sourced from the Data Catologue and can be found [here](https://data.ontario.ca/dataset/bridge-conditions).
 
@@ -30,7 +46,7 @@ with open("../data/raw/bridge_data_raw.csv", 'wb') as f:
     f.write(request.content)
 
 # Load the raw data
-raw_df = pd.read_csv('./data/raw/bridge_data_raw.csv')
+raw_df = pd.read_csv('../data/raw/bridge_data_raw.csv')
 
 # Filter for Bridges only
 processed_df = raw_df[raw_df['CATEGORY'] == 'Bridge']
@@ -145,5 +161,124 @@ drop_columns = [
 ]
 processed_df = processed_df.drop(columns=drop_columns)
 # Save the processed dataframe
-processed_df.to_csv('./data/processed/bridge_data_processed.csv', index=False)
+processed_df.to_csv('../data/processed/bridge_data_processed.csv', index=False)
 ```
+
+## Analysis
+
+```{python}
+# current_bci is dropped because the target was created from it (leakage).
+X_train = train_df.drop(columns=["rehab_soon", "current_bci"])
+y_train = train_df["rehab_soon"]
+
+X_test = test_df.drop(columns=["rehab_soon", "current_bci"])
+y_test = test_df["rehab_soon"]
+```
+```{python}
+# Feature groups
+numeric_features = [
+    "age",
+    "years_since_last_rehab_major",
+    "years_since_last_rehab_minor",
+    "length_m",
+    "width_m",
+    "span_total_m",
+    "span_count",
+    "span_max_m",
+    "span_mean_m",
+    "span_std_m",
+]
+
+categorical_features = [
+    "material",
+    "structure_type",
+    "subcategory",
+    "region",
+    "owner",
+    "operation_status",
+]
+
+drop_features = [
+    "county",  # many small groups, a lot of null values
+]
+```
+```{python}
+num_pipe = make_pipeline(
+    SimpleImputer(strategy="median"),
+    StandardScaler()
+)
+
+cat_pipe = make_pipeline(
+    SimpleImputer(strategy="most_frequent"),
+    OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+)
+
+bridge_preprocessor = make_column_transformer(
+    (num_pipe, numeric_features),
+    (cat_pipe, categorical_features),
+    ("drop", drop_features),
+     verbose_feature_names_out=False
+)
+
+bridge_preprocessor.fit(X_train)
+X_train_transformed = bridge_preprocessor.transform(X_train)
+X_test_transformed = bridge_preprocessor.transform(X_test)
+```
+
+# Results & Discussion
+
+```{python}
+models = {
+    "Baseline (most frequent)": (
+        DummyClassifier(strategy="most_frequent"),
+        {},
+    ),
+    "Logistic regression": (
+        LogisticRegression(max_iter=1000),
+        {
+            "logisticregression__C": [0.01, 0.1, 1, 10, 100],
+            "logisticregression__class_weight": [None, "balanced"],
+        },
+    ),
+    "SVC (RBF)": (
+        SVC(),
+        {
+            "svc__C": [0.1, 1, 10, 100],
+            "svc__gamma": [0.001, 0.01, 0.1, 1],
+            "svc__class_weight": [None, "balanced"],
+        },
+    ),
+}
+
+searches = {}
+results = {}
+
+for name, model in models.items():
+    scores = cross_validate(
+        make_pipeline(bridge_preprocessor, model),
+        X_train,
+        y_train,
+        cv=5,
+        scoring=["accuracy", "recall", "f1"],
+        return_train_score=True
+    )
+    results[name] = pd.DataFrame(scores)
+
+```
+
+```{python}
+logreg_grid = {
+    "logisticregression__C": [0.01, 0.1, 1, 10, 100],
+    "logisticregression__class_weight": [None, "balanced"]
+}
+
+svc_grid = {
+    "svc__C": [0.1, 1, 10, 100],
+    "svc__gamma": [0.001, 0.01, 0.1, 1],
+    "svc__class_weight": [None, "balanced"]
+}
+
+grid_search = GridSearchCV()
+```
+
+# References
