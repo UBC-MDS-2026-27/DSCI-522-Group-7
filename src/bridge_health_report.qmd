@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 import re
 import requests
+from sklearn.model_selection import train_test_split
 ```
 
 ## Data
@@ -146,4 +147,14 @@ drop_columns = [
 processed_df = processed_df.drop(columns=drop_columns)
 # Save the processed dataframe
 processed_df.to_csv('./data/processed/bridge_data_processed.csv', index=False)
+```
+
+```{python}
+# Split the data into training (70%) and test (30%) sets
+train_df, test_df = train_test_split(
+    processed_df, train_size=0.70, stratify=processed_df["rehab_soon"], random_state=522
+)
+
+train_df.to_csv("./data/processed/train_df.csv")
+test_df.to_csv("./data/processed/test_df.csv")
 ```
