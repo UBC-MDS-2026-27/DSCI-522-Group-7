@@ -2,6 +2,8 @@
 
 **Authors:** Catriona McIntosh, Jaeda Yurkiw, Jared Chuang & Rshan Hluf
 
+**HTML Report:** [View our published Quarto report](https://ubc-mds-2026-27.github.io/DSCI-522-ontario-bridge-rehab-predictor/)
+
 Data analysis project for DSCI 522 (Reproducible and Trustworthy Data Science Workflows); a course in the Master of Data Science program at the University of British Columbia.
 
 ## About
