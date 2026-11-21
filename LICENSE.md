@@ -4,7 +4,7 @@
 
 Copyright (c) 2026 Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf
 
-This report (source contained in the [`DSCI_522-Group-7` repository](https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7)) is made available under the **Attribution-NonCommercial-ShareAlike 4.0 International** ([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)).
+This report (source contained in the [`DSCI-522-Group-7` repository](https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7)) is made available under the **Attribution-NonCommercial-ShareAlike 4.0 International** ([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)).
 It is adapted from the report in Tiffany A. Timbers, Joel Ostblom, Melissa Lee, Daniel Chen, Kehan Sky Sheng's [`DSCI_522_project-template-breast-cancer-predictor` repository](https://github.com/UBC-MDS/DSCI_522_project-template-breast-cancer-predictor) (Copyright (c) 2026 Tiffany A. Timbers, Joel Ostblom, Melissa Lee, Daniel Chen, Kehan Sky Sheng, CC BY-NC-SA 4.0).
 
 This is a human-readable summary of (and not a substitute for) the [license](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
