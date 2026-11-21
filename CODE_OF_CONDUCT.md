@@ -30,7 +30,7 @@ This Code of Conduct applies to all project-related interactions, including GitH
 
 ## 5. Reporting Violations
 
-Anyone who experiences or witnesses unacceptable behaviour can report the incident to the project maintainers at **info.dataforchange@gmail.com**.
+Anyone who experiences or witnesses unacceptable behaviour can report the incident to the project maintainers at **cmcint06@student.ubc.ca**.
 
 Reports will be reviewed promptly, fairly, and confidentially. The maintainers will respect the privacy of everyone involved and take appropriate action.
 
