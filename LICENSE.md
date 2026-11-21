@@ -36,6 +36,11 @@ MIT License
 
 Copyright (c) 2026 Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf
 
+This code is adapted from:
+
+- Tiffany A. Timbers, Joel Ostblom, Melissa Lee, Daniel Chen, Kehan Sky Sheng's [`DSCI_522_project-template-breast-cancer-predictor` repository](https://github.com/UBC-MDS/DSCI_522_project-template-breast-cancer-predictor),
+  Copyright (c) 2026 Tiffany A. Timbers, Joel Ostblom, Melissa Lee, Daniel Chen, Kehan Sky Sheng, MIT License.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
