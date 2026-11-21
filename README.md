@@ -10,7 +10,7 @@ Here we attempt to build a classification model that predicts whether an Ontario
 The dataset used for this project comes from the Government of Ontario. It was sourced from the Data Catalogue and can be found [here](https://data.ontario.ca/dataset/bridge-conditions). The data set contains 5,053 structures: 2,993 bridges and 2,060 culverts. Each row represents a bridge or culvert and includes its structure name and important attributes such as material, structure type, year built, years of its last major and minor rehabilitation, length, width, region, last inspection date, current BCI, and the BCI from each year between 2000 and 2020. Ontario bridges are inspected every two years following the Ontario Structure Inspection Manual (OSIM). The results of each inspection are combined into the BCI, a single score that summarizes the condition of the bridge’s elements. A bridge that is brand new, or that has only recently become the Ministry of Transportation’s responsibility, may not have been inspected yet, so it may not have a BCI (Ontario Ministry of Transportation 2021). Because our target variable is defined using each bridge’s current BCI, the BCI is the key variable in this analysis.
 
 ## Report 
-The final report can be found [here]([GitHub Pages link]) (HTML), or as a [PDF]([PDF link]).
+The final report can be found [here]([GitHub Pages link]) (HTML).
 
 ## Usage 
 First time running the project, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Quarto](https://quarto.org/docs/get-started/), then clone this repository and move into it:
@@ -30,11 +30,11 @@ To run the analysis and render the report, run the following from the root of th
 uv run quarto render src/bridge_health_report.qmd
 ```
 
-Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `src/bridge_health_report.html` and `src/bridge_health_report.pdf`, replacing the versions in this repository.
+Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `src/bridge_health_report.html`, replacing the version in this repository.
 
 ## Dependencies
-- [uv] (https://docs.astral.sh/uv/) (version 0.12 or higher)
-- [Quarto] (https://quarto.org/) (version 1.10 or higher)
+- [uv](https://docs.astral.sh/uv/) (version 0.12 or higher)
+- [Quarto](https://quarto.org/) (version 1.10 or higher)
 - Python and packages listed in [`pyproject.toml`](pyproject.toml) (exact versions are locked in [`uv.lock`](uv.lock))
 
 ## AI use statement
