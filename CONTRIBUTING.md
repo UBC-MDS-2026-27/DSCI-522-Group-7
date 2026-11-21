@@ -24,8 +24,8 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
 create the virtual environment from the root of the repository:
 
 ``` bash
-git clone https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7
-cd DSCI-522-Group-7
+git clone git@github.com:UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
+cd DSCI-522-ontario-bridge-rehab-predictor
 uv sync
 ```
 
