@@ -373,7 +373,7 @@ confusion
 ```
 
 # Discussion
-Our final model, RBF SVC, showed moderate success at predicting whether an Ontario bridge needs rehabilitation soon (has a BCI below 70). On the test set it identified 82% of the bridges below this threshold, but only 38% of the bridges it flagged actually had a BCI below 70 (Table x). The model outperformed the baseline’s 0% recall of bridges needing rehabilitation and an F1 score of 0, despite being 89% accurate because of the class imbalance.
+Our final model, RBF SVC, showed moderate success at predicting whether an Ontario bridge needs rehabilitation soon (has a BCI below 70). On the test set it identified 82% of the bridges below this threshold, but only 38% of the bridges it flagged actually had a BCI below 70 (Table 7). The model outperformed the baseline’s 0% recall of bridges needing rehabilitation and an F1 score of 0 (Table 1).
 
 These results suggest a model like this could be used to help prioritize which bridges to inspect or budget for, but it is not a replacement for inspections. The 18 bridges that were missed might not be rehabilitated, leading to further deterioration and potentially higher repair costs. However, 16% of the bridges that did not need rehabilitation were still flagged. This would waste inspection time and money. Note that the BCI reflects a bridge’s physical condition, it does not predict the likelihood of failure of the bridge or safety (Office of the Auditor General of Ontario 2021), so a missed bridge does not imply an unsafe one.
 
