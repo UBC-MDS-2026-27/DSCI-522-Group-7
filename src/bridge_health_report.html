@@ -9,7 +9,7 @@
 <meta name="author" content="Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf">
 <meta name="dcterms.date" content="2026-11-13">
 
-<title>Title</title>
+<title>DSCI 522: Predicting whether Ontario bridges need near-term rehabilitation</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -92,7 +92,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Title</h1>
+<h1 class="title">DSCI 522: Predicting whether Ontario bridges need near-term rehabilitation</h1>
 </div>
 
 
@@ -121,24 +121,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="e7fd493e" class="cell" data-execution_count="1">
+<div id="d93ecff8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> make_column_transformer, make_column_selector</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> make_column_transformer</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, OneHotEncoder</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.dummy <span class="im">import</span> DummyClassifier</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score, recall_score, precision_score, accuracy_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score, recall_score, precision_score, accuracy_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="summary" class="level1">
 <h1>Summary</h1>
@@ -146,15 +145,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
+<p>Across Ontario’s provincial highway network, thousands of bridges must be kept in a state of good repair to ensure safe travel and freight mobility, with annual provincial funding for transportation structures rising from $93 million in 2007/08 to $754 million in 2021/22 (Office of the Auditor General of Ontario 2021). To monitor structural depriciation, provincial bridges undergo mandatory visual inspections every two years, resulting in a Bridge Condition Index (BCI) score from 0 to 100 (Office of the Auditor General of Ontario 2021). Bridges with a BCI of 70 or above are generally considered to be in good condition, whereas scores below 70 fall into fair or poor condition where capital maintenance or rehabilitation is typically scheduled within five years (Office of the Auditor General of Ontario 2021; Ontario Ministry of Transportation 2021).</p>
+<p>Here we ask if we can use a machine learning algorithm to predict whether an Ontario provincial bridge requires near-term rehabilitation (defined as having a current BCI below 70) versus being in good condition (a current BCI of 70 or above), given its structural, geographic, and historical characteristics. Answering this question is important because traditional visual inspections rely on qualitative assessments of material defects that can be subjective, time-consuming, and constrained by physical access—such as bridge elements located underwater, underground, or high above ground (Office of the Auditor General of Ontario 2021). Furthermore, audit reviews have found that inspection quality can vary across inspectors, with recording omissions or unverified time spent on site affecting condition records (Office of the Auditor General of Ontario 2021). If a machine learning classifier can reliably flag bridges likely to have a BCI below 70 using structural records, transportation planners could better prioritize on-site engineering inspections and allocate limited budgets before bridge health worsens.</p>
+<p>To answer this question, we use the Bridge Conditions dataset from the Government of Ontario’s Data Catalogue (Ontario Ministry of Transportation 2021). While the full dataset includes 5,053 provincial structures (2,993 bridges and 2,060 culverts), we have chosen to focus solely on the 2,993 bridges, of which 2,962 have a recorded BCI. Each row in our modeling dataset represents an individual provincial bridge with a recorded current BCI score. As predictors, we use age, span details, material, structure type, years since last major and minor rehabilitation, length, width, owner, region, subcategory and operation status. Our binary target variable is derived from each bridge’s current BCI: bridges with a current BCI below 70 are labeled as needing rehabilitation (1), while bridges with a current BCI of 70 or above are labeled as being in good condition (0).</p>
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <p>The dataset used for this project comes from the Government of Ontario. It was sourced from the Data Catalogue and can be found <a href="https://data.ontario.ca/dataset/bridge-conditions">here</a>.</p>
-<p>The data set contains 5,053 structures: 2,993 bridges and 2,060 culverts. Each row represents a bridge or culvert and includes its structure name and important attributes such as material, structure type, year built, years of its last major and minor rehabilitation, length, width, region, last inspection date, current BCI, and the BCI from each year between 2000 and 2020. Ontario bridges are inspected every two years following the Ontario Structure Inspection Manual (OSIM). The results of each inspection are combined into the BCI, a single score that summarizes the condition of the bridge’s elements. A bridge that is brand new, or that has only recently become the Ministry of Transportation’s responsibility, may not have been inspected yet, so it may not have a BCI (Ontario Ministry of Transportation 2021). Because our target variable is defined using each bridge’s current BCI, the BCI is the key variable in this analysis.</p>
+<p>The dataset contains 5,053 structures: 2,993 bridges and 2,060 culverts. Each row represents a bridge or culvert and includes its structure name and important attributes such as material, structure type, year built, years of its last major and minor rehabilitation, length, width, region, last inspection date, current BCI, and the BCI from each year between 2000 and 2020. Ontario bridges are inspected every two years following the Ontario Structure Inspection Manual (OSIM). The results of each inspection are combined into the BCI, a single score that summarizes the condition of the bridge’s elements. A bridge that is brand new, or that has only recently become the Ministry of Transportation’s responsibility, may not have been inspected yet, so it may not have a BCI (Ontario Ministry of Transportation 2021). Because our target variable is defined using each bridge’s current BCI, the BCI is the key variable in this analysis.</p>
 <p>We downloaded the data using the code below. The code downloads the Bridge Conditions data from the Ontario Data Catalogue as a CSV file and saves it as <code>bridge_data_raw.csv</code> in <code>data/raw/</code>. We kept only bridges, removing culverts, and removed 31 bridges with no recorded current BCI, leaving 2,962 bridges.</p>
-<div id="ce5731c4" class="cell" data-execution_count="2">
+<div id="fb3a6dfe" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create data folders if they don't exist</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"../data/raw"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"../data/processed"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
@@ -202,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>processed_df <span class="op">=</span> processed_df.rename(columns<span class="op">=</span>rename_map)</span>
 <span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows that don't have a CURRENT_BCI (target), 52 rows</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows that don't have a CURRENT_BCI (target)</span></span>
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>processed_df <span class="op">=</span> processed_df.dropna(subset<span class="op">=</span>[<span class="st">'current_bci'</span>])</span>
 <span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Create target variable</span></span>
@@ -292,9 +294,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We compared three models. A dummy classifier that always predicts the most common class was used as the baseline. Logistic regression was used because it is a linear model that is fast and easy to interpret. A support vector classifier (SVC) with a radial basis function (RBF) kernel was used because it is a non-linear model that can capture interactions between features that logistic regression cannot. Comparing a linear and a non-linear model shows whether the extra flexibility of the RBF SVC leads to better results.</p>
 <p>For numeric features, missing values were imputed with the median and the values were scaled. For categorical features, missing values were imputed with the most frequent category and the categories were one-hot encoded. This preprocessing was placed in a pipeline with each model, so that imputation and scaling were fitted only on the training folds during cross-validation, avoiding data leakage.</p>
 <p>The hyperparameters of logistic regression and the RBF SVC were tuned using grid search with 5-fold cross-validation on the training data. For logistic regression, we tuned the regularization strength C (0.01, 0.1, 1, 10, 100) and class weighting (none or balanced). For the RBF SVC, we tuned C (0.1, 1, 10, 100), gamma (0.001, 0.01, 0.1, 1), and class weighting. Balanced class weighting was included because only about 11% of bridges need rehabilitation soon, and it makes the model pay more attention to this minority class.</p>
-<p>The F1 score was used to evaluate the models instead of accuracy. Because only about 11% of bridges need rehabilitation soon, the baseline achieves high accuracy without ever identifying a bridge that needs rehabilitation (a recall of 0). The F1 score balances recall and precision, so it only rewards models that actually find bridges at risk. The RBF SVC had the highest mean cross-validation F1 score (0.51, compared with 0.47 for logistic regression), with C = 1, gamma = 0.01, and balanced class weights. This final model was evaluated once on the test set.</p>
-<p>The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: requests (Reitz 2011), re (Van Rossum and Drake 2009), NumPy (Harris et al.&nbsp;2020), pandas (McKinney 2010), Altair (VanderPlas et al.&nbsp;2018) and scikit-learn (Pedregosa et al.&nbsp;2011). The code used to perform the analysis and create this report can be found here: <a href="https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7" class="uri">https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7</a>.</p>
-<div id="b240a4d9" class="cell" data-execution_count="3">
+<p>The F1 score was used to evaluate the models instead of accuracy. Because only about 11% of bridges need rehabilitation soon, the baseline achieves high accuracy without ever identifying a bridge that needs rehabilitation (a recall of 0). The F1 score balances recall and precision, so it only rewards models that actually find bridges at risk. The RBF SVC had the highest mean cross-validation F1 score (0.51, compared with 0.47 for logistic regression), with C = 1, gamma = 0.1, and balanced class weights. This final model was evaluated once on the test set.</p>
+<p>The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: requests (Reitz 2011), re (Van Rossum and Drake 2009), NumPy (Harris et al.&nbsp;2020), pandas (McKinney 2010), Altair (VanderPlas et al.&nbsp;2018) and scikit-learn (Pedregosa et al.&nbsp;2011). The code used to perform the analysis and create this report can be found here: <a href="https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/tree/main" class="uri">https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/tree/main</a>.</p>
+<div id="f947f4b8" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into training (70%) and test (30%) sets</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>train_df, test_df <span class="op">=</span> train_test_split(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    processed_df, train_size<span class="op">=</span><span class="fl">0.70</span>, stratify<span class="op">=</span>processed_df[<span class="st">"rehab_soon"</span>], random_state<span class="op">=</span><span class="dv">522</span></span>
@@ -304,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>test_df.to_csv(<span class="st">"../data/processed/test_df.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Table 1: Number and proportion of bridges in the training data that need rehabilitation soon (BCI below 70).</p>
-<div id="266d89c8" class="cell" data-execution_count="4">
+<div id="73901fb8" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># EDA Summary Tables</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make Table 1 which shows how many bridges in the training data need rehab, and how many don't.</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>table_1 <span class="op">=</span> train_df[<span class="st">"rehab_soon"</span>].value_counts().sort_index().to_frame()</span>
@@ -349,8 +351,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Table 2: Avergage age, years since last major rehab, and size of bridges in the training data that, by whether they need rehabilitation soon.</p>
-<div id="37def282" class="cell" data-execution_count="5">
+<p>Table 2: Average age, years since last major rehab, and size of bridges in the training data, by whether they need rehabilitation soon.</p>
+<div id="6e44ea3a" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make Table 2 which shows if bridges that need rehabilitation are different from ones that don't in age, time since last rehab, and size.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>table_2 <span class="op">=</span> train_df.groupby(<span class="st">"rehab_soon"</span>)[[<span class="st">"age"</span>, <span class="st">"years_since_last_rehab_major"</span>, <span class="st">"width_m"</span>, <span class="st">"length_m"</span>]].mean().<span class="bu">round</span>(<span class="dv">1</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -403,7 +405,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Table 3: Number of bridges and proportion needing rehabilitation soon in the training data, by material.</p>
-<div id="fa63f8c7" class="cell" data-execution_count="6">
+<div id="351ba33f" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make Table 3 which shows if bridges that need rehabilitation differ by material.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>table_3 <span class="op">=</span> train_df.groupby(<span class="st">"material"</span>)[<span class="st">"rehab_soon"</span>].agg([<span class="st">"count"</span>, <span class="st">"mean"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -485,8 +487,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Table 4: Number of brudges and proportion needing rehabilitation soon in the training data, by structure type.</p>
-<div id="620e3653" class="cell" data-execution_count="7">
+<p>Table 4: Number of bridges and proportion needing rehabilitation soon in the training data, by structure type.</p>
+<div id="7d97b062" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make Table 4 which shows if a bridge needs rehabilitation soon depending on its structure type.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>table_4 <span class="op">=</span> train_df.groupby(<span class="st">"structure_type"</span>)[<span class="st">"rehab_soon"</span>].agg([<span class="st">"count"</span>, <span class="st">"mean"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -709,7 +711,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Table 5: Number of bridges and proportion needing rehabilitation soon in the training data, by region.</p>
-<div id="602ab2e3" class="cell" data-execution_count="8">
+<div id="d7c189a8" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make Table 5 which shows if bridges needing rehabilitation differ by region.</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>table_5 <span class="op">=</span> train_df.groupby(<span class="st">"region"</span>)[<span class="st">"rehab_soon"</span>].agg([<span class="st">"count"</span>, <span class="st">"mean"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -767,7 +769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Figure 1: Distribution of Ontario bridge age by rehabilitation need in the training data.</p>
-<div id="cb7232ba" class="cell" data-execution_count="9">
+<div id="81738d0e" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>age_plot <span class="op">=</span> alt.Chart(train_df).mark_boxplot().encode(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(</span>
@@ -792,23 +794,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display" data-execution_count="9">
 
 <style>
-  #altair-viz-4fac655b3f2f42adbba6130b87c23702.vega-embed {
+  #altair-viz-b67c4db199984857a3376c934c635126.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-4fac655b3f2f42adbba6130b87c23702.vega-embed details,
-  #altair-viz-4fac655b3f2f42adbba6130b87c23702.vega-embed details summary {
+  #altair-viz-b67c4db199984857a3376c934c635126.vega-embed details,
+  #altair-viz-b67c4db199984857a3376c934c635126.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-4fac655b3f2f42adbba6130b87c23702"></div>
+<div id="altair-viz-b67c4db199984857a3376c934c635126"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-4fac655b3f2f42adbba6130b87c23702") {
-      outputDiv = document.getElementById("altair-viz-4fac655b3f2f42adbba6130b87c23702");
+    if (outputDiv.id !== "altair-viz-b67c4db199984857a3376c934c635126") {
+      outputDiv = document.getElementById("altair-viz-b67c4db199984857a3376c934c635126");
     }
 
     const paths = {
@@ -861,7 +863,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Figure 2: Percentage of Ontario bridges requiring rehabilitation among the five most common construction materials in the training data.</p>
-<div id="7771bb46" class="cell" data-execution_count="10">
+<div id="78a81a85" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the 5 most common bridge materials</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>top_materials <span class="op">=</span> train_df[<span class="st">"material"</span>].value_counts().head(<span class="dv">5</span>).index</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>material_df <span class="op">=</span> train_df[train_df[<span class="st">"material"</span>].isin(top_materials)].copy()</span>
@@ -904,23 +906,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display" data-execution_count="10">
 
 <style>
-  #altair-viz-7b97773c2731470ab21a60886336bd01.vega-embed {
+  #altair-viz-165d17df82d642f9bdfa12102654088a.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-7b97773c2731470ab21a60886336bd01.vega-embed details,
-  #altair-viz-7b97773c2731470ab21a60886336bd01.vega-embed details summary {
+  #altair-viz-165d17df82d642f9bdfa12102654088a.vega-embed details,
+  #altair-viz-165d17df82d642f9bdfa12102654088a.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-7b97773c2731470ab21a60886336bd01"></div>
+<div id="altair-viz-165d17df82d642f9bdfa12102654088a"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-7b97773c2731470ab21a60886336bd01") {
-      outputDiv = document.getElementById("altair-viz-7b97773c2731470ab21a60886336bd01");
+    if (outputDiv.id !== "altair-viz-165d17df82d642f9bdfa12102654088a") {
+      outputDiv = document.getElementById("altair-viz-165d17df82d642f9bdfa12102654088a");
     }
 
     const paths = {
@@ -973,7 +975,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Figure 3: Distribution of bridge lengths by rehabilitation status for Ontario bridges up to 300 metres, using training data.</p>
-<div id="a54e82dd" class="cell" data-execution_count="11">
+<div id="4ce8f46a" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare bridge length data</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>length_df <span class="op">=</span> train_df[[<span class="st">"length_m"</span>, <span class="st">"rehab_soon"</span>]].dropna().copy()</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1023,23 +1025,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display" data-execution_count="11">
 
 <style>
-  #altair-viz-cef5fbcf03e84758942e32aabb8b7b5e.vega-embed {
+  #altair-viz-14da4094f5454e25b8c829bb6ff665ce.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-cef5fbcf03e84758942e32aabb8b7b5e.vega-embed details,
-  #altair-viz-cef5fbcf03e84758942e32aabb8b7b5e.vega-embed details summary {
+  #altair-viz-14da4094f5454e25b8c829bb6ff665ce.vega-embed details,
+  #altair-viz-14da4094f5454e25b8c829bb6ff665ce.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-cef5fbcf03e84758942e32aabb8b7b5e"></div>
+<div id="altair-viz-14da4094f5454e25b8c829bb6ff665ce"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-cef5fbcf03e84758942e32aabb8b7b5e") {
-      outputDiv = document.getElementById("altair-viz-cef5fbcf03e84758942e32aabb8b7b5e");
+    if (outputDiv.id !== "altair-viz-14da4094f5454e25b8c829bb6ff665ce") {
+      outputDiv = document.getElementById("altair-viz-14da4094f5454e25b8c829bb6ff665ce");
     }
 
     const paths = {
@@ -1092,7 +1094,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Figure 4: Density distribution of Bridge Condition Index (BCI) for all Ontario bridges in the training data. The dashed line at BCI = 70 indicates the rehabilitation threshold.</p>
-<div id="01192a70" class="cell" data-execution_count="12">
+<div id="9fe1b8c0" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Figure 4: BCI density distribution</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>bci_density <span class="op">=</span> alt.Chart(train_df).transform_density(</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"current_bci"</span>,</span>
@@ -1136,23 +1138,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-display" data-execution_count="12">
 
 <style>
-  #altair-viz-f64a73e3d79f4c0cb60e3300018e6c4d.vega-embed {
+  #altair-viz-a9c15273d1e24166b2149c732f78e79a.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-f64a73e3d79f4c0cb60e3300018e6c4d.vega-embed details,
-  #altair-viz-f64a73e3d79f4c0cb60e3300018e6c4d.vega-embed details summary {
+  #altair-viz-a9c15273d1e24166b2149c732f78e79a.vega-embed details,
+  #altair-viz-a9c15273d1e24166b2149c732f78e79a.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-f64a73e3d79f4c0cb60e3300018e6c4d"></div>
+<div id="altair-viz-a9c15273d1e24166b2149c732f78e79a"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-f64a73e3d79f4c0cb60e3300018e6c4d") {
-      outputDiv = document.getElementById("altair-viz-f64a73e3d79f4c0cb60e3300018e6c4d");
+    if (outputDiv.id !== "altair-viz-a9c15273d1e24166b2149c732f78e79a") {
+      outputDiv = document.getElementById("altair-viz-a9c15273d1e24166b2149c732f78e79a");
     }
 
     const paths = {
@@ -1205,9 +1207,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="modelling" class="level2">
-<h2 class="anchored" data-anchor-id="modelling">Modelling</h2>
-<div id="ac658e80" class="cell" data-execution_count="13">
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+<div id="d73e3eb2" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># current_bci is dropped because the target was created from it (leakage).</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train_df.drop(columns<span class="op">=</span>[<span class="st">"rehab_soon"</span>, <span class="st">"current_bci"</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> train_df[<span class="st">"rehab_soon"</span>]</span>
@@ -1215,7 +1217,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> test_df.drop(columns<span class="op">=</span>[<span class="st">"rehab_soon"</span>, <span class="st">"current_bci"</span>])</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> test_df[<span class="st">"rehab_soon"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="38242bf0" class="cell" data-execution_count="14">
+<div id="dac30339" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Feature groups</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="op">=</span> [</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>,</span>
@@ -1243,7 +1245,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"county"</span>,  <span class="co"># many small groups, a lot of null values</span></span>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="6805691f" class="cell" data-execution_count="15">
+<div id="8d736cf2" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>num_pipe <span class="op">=</span> make_pipeline(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    StandardScaler()</span>
@@ -1261,7 +1263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>     verbose_feature_names_out<span class="op">=</span><span class="va">False</span></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="01c6a878" class="cell" data-execution_count="16">
+<div id="7feb1366" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> {</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Baseline (most frequent)"</span>: (</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        DummyClassifier(strategy<span class="op">=</span><span class="st">"most_frequent"</span>),</span>
@@ -1313,7 +1315,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> results.drop(columns<span class="op">=</span><span class="st">"Best settings"</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="3c6ee82e" class="cell" data-execution_count="17">
+<div id="f8ed5f88" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RBF SVM had highest f1 score</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> best_model.predict(X_test)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1324,7 +1326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Accuracy"</span>: [accuracy_score(y_pred<span class="op">=</span>y_pred, y_true<span class="op">=</span>y_test)]</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">"Test set"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d81ba7be" class="cell" data-execution_count="18">
+<div id="3d9dd29c" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion matrix to show results</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>confusion <span class="op">=</span> pd.crosstab(y_test, y_pred)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>confusion.index <span class="op">=</span> [<span class="st">"Actually needs rehab: No"</span>, <span class="st">"Actually needs rehab: Yes"</span>]</span>
@@ -1347,7 +1349,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="model-performance">Model Performance</h2>
 <p>Three classification models were evaluated using five-fold cross-validation: a most-frequent baseline, logistic regression, and a radial basis function support vector classifier (RBF SVC). The RBF SVC achieved the highest mean validation F1 score (0.51), compared with 0.47 for logistic regression and 0 for the baseline (Table 6). Its best settings used balanced class weights, C = 1 and gamma = 0.1.</p>
 <p>Table 6: Mean training and validation F1 scores from five-fold cross-validation for each model, using the best hyperparameter settings found by grid search.</p>
-<div id="88118434" class="cell" data-execution_count="19">
+<div id="05138dd1" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>comparison</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <div>
@@ -1390,7 +1392,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The selected RBF SVC achieved an F1 score of 0.52, recall of 0.82, precision of 0.38, and accuracy of 0.83 on the held-out test set (Table 7).</p>
 <p>Table 7: Performance of the final RBF SVC model on the test set.</p>
-<div id="2384f19b" class="cell" data-execution_count="20">
+<div id="52fa1332" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>test_scores</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div>
@@ -1422,7 +1424,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The confusion matrix (Table 8) showed that the model correctly identified 80 bridges requiring rehabilitation and 662 bridges not requiring rehabilitation. However, it missed 18 bridges requiring rehabilitation and incorrectly flagged 129 bridges that did not require rehabilitation.</p>
 <p>Table 8: Confusion matrix of the final model’s predictions on the test set. Rows show whether a bridge actually needs rehabilitation soon; columns show the model’s prediction.</p>
-<div id="f5f9edfc" class="cell" data-execution_count="21">
+<div id="a05d2990" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>confusion</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <div>
@@ -1458,11 +1460,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
-<p>Our final model, RBF SVC, showed moderate success at predicting whether an Ontario bridge needs rehabilitation soon (has a BCI below 70). On the test set it identified 82% of the bridges below this threshold, but only 38% of the bridges it flagged actually had a BCI below 70 (Table 7). The model outperformed the baseline’s 0% recall of bridges needing rehabilitation and an F1 score of 0 (Table 6).</p>
-<p>These results suggest a model like this could be used to help prioritize which bridges to inspect or budget for, but it is not a replacement for inspections. The 18 bridges that were missed might not be rehabilitated, leading to further deterioration and potentially higher repair costs. However, 16% of the bridges that did not need rehabilitation were still flagged. This would waste inspection time and money. Note that the BCI reflects a bridge’s physical condition, it does not predict the likelihood of failure of the bridge or safety (Office of the Auditor General of Ontario 2021), so a missed bridge does not imply an unsafe one.</p>
+<p>Our final model, RBF SVC, showed moderate success at predicting whether an Ontario bridge needs rehabilitation soon (has a BCI below 70). On the test set it identified 82% of the bridges below this threshold, but only 38% of the bridges it flagged actually had a BCI below 70 (Table 7). The model outperformed the baseline’s F1 score of 0 (Table 6).</p>
+<p>These results suggest a model like this could be used to help prioritize which bridges to inspect or budget for, but it is not a replacement for inspections. The 18 bridges that were missed might not be rehabilitated, leading to further deterioration and potentially higher repair costs. However, 16% of the bridges that did not need rehabilitation were still flagged. This would waste inspection time and money. Note that the BCI reflects a bridge’s physical condition, but it does not predict the likelihood of failure of the bridge or safety (Office of the Auditor General of Ontario 2021), so a missed bridge does not imply an unsafe one.</p>
 <p>Some of these results were expected. Our EDA showed that bridges needing rehabilitation were older on average and had gone longer since their last major rehabilitation (Table 2), suggesting these features hold useful information about bridge condition. The low precision was also expected because the tuned models used balanced class weights, which push the model to flag more bridges in the minority class, which leads to higher recall of bridges needing maintenance at the expense of precision. The overall moderate performance despite some of these clear patterns was surprising. One possible reason is that bridges with a BCI just above or below 70 are hard to classify using structural features alone, and that factors not in our data, such as traffic volume, climate and maintenance history, also affect deterioration.</p>
 <p>Several directions could be explored to improve the model. Examining misclassified bridges, particularly those with a BCI close to 70, could reveal which features drive misclassification. This is supported by previous work on the same Ministry of Transportation’s public bridge condition data, which found that the original attributes were not suitable for reliable classification models of future BCI, and that tuning the attributes was key to improving performance (Martinez et al.&nbsp;2020). Adding environmental and usage factors not in our data, such as climate and traffic volume, and using each bridge’s condition history to forecast when its BCI is likely to fall below 70, could make the model both more accurate and more useful for planning. Finally, since logistic regression performed almost as well as the RBF SVC with less overfitting, examining its coefficients could show which bridge characteristics, such as age, material or region, most strongly drive deterioration.</p>
-<p>Our analysis should be read with some assumptions and limitations in mind. We assumed that a BCI below 70 is a meaningful indication of a bridge needing work soon (Office of the Auditor General of Ontario 2021). This means bridges either side of 70 are flagged differently even when their BCI is similar. In cleaning, we assumed that the missing rehabilitation year means a bridge was never rehabilitated. The data set reflects bridge conditions around 2020, and may not represent current conditions. Moreover, the data does not include factors that likely affect bridge conditions including climate and traffic volume. Finally, with only 98 bridges needing rehabilitation in the test set, results from a single train/test split are fairly uncertain, and they apply only to the bridges in this dataset, not to culverts or bridges elsewhere. More recent data with these additional factors would be needed to judge whether the model is useful in practice.</p>
+<p>Our analysis should be read with some assumptions and limitations in mind. We assumed that a BCI below 70 is a meaningful indication of a bridge needing work soon (Office of the Auditor General of Ontario 2021). This means bridges either side of 70 are flagged differently even when their BCI is similar. In cleaning, we assumed that the missing rehabilitation year means a bridge was never rehabilitated. The dataset reflects bridge conditions around 2020, and may not represent current conditions. Moreover, the data does not include factors that likely affect bridge conditions including climate and traffic volume. Finally, with only 98 bridges needing rehabilitation in the test set, results from a single train/test split are fairly uncertain, and they apply only to the bridges in this dataset, not to culverts or bridges elsewhere. More recent data with these additional factors would be needed to judge whether the model is useful in practice.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
