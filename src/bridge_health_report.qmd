@@ -189,7 +189,7 @@ The hyperparameters of logistic regression and the RBF SVC were tuned using grid
 
 The F1 score was used to evaluate the models instead of accuracy. Because only about 11% of bridges need rehabilitation soon, the baseline achieves high accuracy without ever identifying a bridge that needs rehabilitation (a recall of 0). The F1 score balances recall and precision, so it only rewards models that actually find bridges at risk. The RBF SVC had the highest mean cross-validation F1 score (0.51, compared with 0.47 for logistic regression), with C = 1, gamma = 0.1, and balanced class weights. This final model was evaluated once on the test set.
 
-The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: requests (Reitz 2011), re (Van Rossum and Drake 2009), NumPy (Harris et al. 2020), pandas (McKinney 2010), Altair (VanderPlas et al. 2018) and scikit-learn (Pedregosa et al. 2011). The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7>.
+The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: requests (Reitz 2011), re (Van Rossum and Drake 2009), NumPy (Harris et al. 2020), pandas (McKinney 2010), Altair (VanderPlas et al. 2018) and scikit-learn (Pedregosa et al. 2011). The code used to perform the analysis and create this report can be found here: <http://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor>.
 
 ```{python}
 # Split the data into training (70%) and test (30%) sets
