@@ -44,7 +44,7 @@ and commit both files.
 * Create a Git branch for each pull request (PR). Do not commit directly to `main`.
 * Give a descriptive branch name like `fix-contributing.md` or `add-new-eda`
 * Keep each branch small and independent
-* Before opening the PR, render the report (`uv run quarto render`)
+* Before opening the PR, render the report (`uv run quarto render src/bridge_health_report.qmd`)
    to check that the analysis still runs from start to finish.
 * Open a PR into `main` and describe what changed and why.
    Link the related issue (e.g., "Closes #12").
@@ -88,7 +88,7 @@ the pull request themselves.
 
 ### Disclosure
 
-You must disclose whether AI was used in developing your pull request description. If AI was used, 
+You must disclose whether AI was used in developing in your pull request description. If AI was used, 
 document which tool(s) and version(s), how they were used, and what code or text is 
 AI generated. We will ask you to complete the disclosure before review.
 

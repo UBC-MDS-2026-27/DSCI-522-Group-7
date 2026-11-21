@@ -51,5 +51,4 @@ We did not use an instruction file (such as a `CLAUDE.md`). Some example prompts
 The Ontario Bridge Rehabilitation Predictor report contained herein is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/). See [the license file](LICENSE.md) for more information. If re-using/re-mixing please provide attribution and link to this webpage. The software code contained within this repository is licensed under the MIT license. See [the license file](LICENSE.md) for more information.
 
 ## References
-Ontario Ministry of Transportation. 2021. "Bridge Conditions." Ontario Data Catalogue. https://data.ontario.ca/dataset/bridge-conditions.
-
+Ontario Ministry of Transportation. 2021. "Bridge Conditions." Dataset, last updated June 9, 2021. Ontario Data Catalogue. https://data.ontario.ca/dataset/bridge-conditions/resource/703cdf01-ff09-4b86-b017-6e8d87b11fd2.

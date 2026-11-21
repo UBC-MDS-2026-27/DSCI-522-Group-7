@@ -18,7 +18,7 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 
 ## Under the following terms:
 
-- **Attribution** — You must give appropriate credit (mentioning that your work is derived from work that is Copyright © Copyright (c) 2026 Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf and, where practical, linking to https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7), provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- **Attribution** — You must give appropriate credit (mentioning that your work is derived from work that is Copyright (c) 2026 Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf and, where practical, linking to https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7), provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 - **NonCommercial** — You may not use the material for commercial purposes.
 - **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 
