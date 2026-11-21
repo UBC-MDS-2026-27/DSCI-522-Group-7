@@ -8,6 +8,7 @@ jupyter: python3
 ```{python}
 import os
 import pandas as pd
+import altair as alt
 import numpy as np
 import re
 import requests
@@ -241,6 +242,197 @@ table_5.columns = ["Number of bridges", "Proportion needing rehabilitation soon"
 table_5
 ```
 
+Figure 1: Distribution of Ontario bridge age by rehabilitation need in the training data.
+
+```{python}
+import altair as alt
+age_plot = alt.Chart(train_df).mark_boxplot().encode(
+    x=alt.X(
+        "rehab_soon:N",
+        title="Rehabilitation Status",
+        axis=alt.Axis(
+            labelExpr="datum.value == 0 ? 'No Rehab ' : 'Rehab Needed'",
+            labelAngle=0
+        )
+    ),
+    y=alt.Y(
+        "age:Q",
+        title="Bridge Age (years)"
+    )
+).properties(
+    title="Ontario Bridge Rehabilitation Needs",
+    width=450,
+    height=300
+)
+
+age_plot
+```
+
+
+
+
+Figure 2: Percentage of Ontario bridges requiring rehabilitation among the five most common construction materials in the training data.
+
+```{python}
+# Select the 5 most common bridge materials
+top_materials = train_df["material"].value_counts().head(5).index
+material_df = train_df[train_df["material"].isin(top_materials)].copy()
+
+# Shorten material names while preserving concrete types
+material_df["material_short"] = material_df["material"].replace({
+    "Reinforced Cast-In-Place Concrete": "Reinforced concrete (cast-in-place)",
+    "Prestressed Precast Concrete": "Prestressed concrete (precast)",
+    "Post-Tensioned Cast-In-Place Concrete": "Post-tensioned concrete (cast-in-place)"
+})
+
+# Create Figure 2
+material_plot = alt.Chart(material_df).mark_bar().encode(
+    x=alt.X(
+        "mean(rehab_soon):Q",
+        title="Bridges Needing Rehabilitation",
+        axis=alt.Axis(format=".0%")
+    ),
+    y=alt.Y(
+        "material_short:N",
+        title="Material",
+        sort="-x"
+    ),
+    tooltip=[
+        alt.Tooltip("material:N", title="Full Material Name"),
+        alt.Tooltip(
+            "mean(rehab_soon):Q",
+            title="Rehabilitation Rate",
+            format=".1%"
+        ),
+        alt.Tooltip("count():Q", title="Number of Bridges")
+    ]
+).properties(
+    title="Ontario Bridge Rehabilitation Needs by Material",
+    width=450,
+    height=250
+)
+
+material_plot
+```
+
+
+
+
+
+
+
+Figure 3: Distribution of bridge lengths by rehabilitation status for Ontario bridges up to 300 metres, using training data.
+
+```{python}
+# Prepare bridge length data
+length_df = train_df[["length_m", "rehab_soon"]].dropna().copy()
+
+length_df = length_df[
+    (length_df["length_m"] > 0) &
+    (length_df["length_m"] <= 300)
+]
+
+length_df["Rehabilitation Status"] = length_df["rehab_soon"].map({
+    0: "No Rehab Needed",
+    1: "Rehab Needed"
+})
+
+# Create Figure 3: Violin plot
+violin_plot = alt.Chart(length_df).transform_density(
+    "length_m",
+    as_=["Bridge Length", "Density"],
+    groupby=["Rehabilitation Status"]
+).mark_area(orient="horizontal").encode(
+    x=alt.X(
+        "Density:Q",
+        stack="center",
+        axis=None,
+        title=None
+    ),
+    y=alt.Y(
+        "Bridge Length:Q",
+        title="Bridge Length (m)"
+    ),
+    column=alt.Column(
+        "Rehabilitation Status:N",
+        title=None
+    ),
+    color=alt.Color(
+        "Rehabilitation Status:N",
+        legend=None
+    )
+).properties(
+    title="Ontario Bridge Length by Rehabilitation Status",
+
+
+    width=200,
+    height=350
+)
+
+violin_plot
+```
+
+
+
+
+
+Figure 4: Density distribution of Bridge Condition Index (BCI) for all Ontario bridges in the training data. The dashed line at BCI = 70 indicates the rehabilitation threshold.
+
+```{python}
+# Create Figure 4: BCI density distribution
+bci_density = alt.Chart(train_df).transform_density(
+    "current_bci",
+    as_=["BCI", "Density"]
+).mark_area(
+    color="#929292",
+    opacity=0.6,
+    line={"color": "#333333"}
+).encode(
+    x=alt.X(
+        "BCI:Q",
+        title="Bridge Condition Index (BCI)",
+        axis=alt.Axis(values=[0, 20, 40, 60, 80, 100]),
+        scale=alt.Scale(domain=[0, 100])
+    ),
+    y=alt.Y(
+        "Density:Q",
+        title="Density"
+    )
+)
+
+# Add rehabilitation threshold at BCI = 70
+threshold = alt.Chart(
+    pd.DataFrame({"BCI": [70]})
+).mark_rule(
+    color="#333333",
+    strokeDash=[6, 4],
+    strokeWidth=2
+).encode(
+    x="BCI:Q"
+)
+
+# Combine density plot and threshold
+bci_plot = (bci_density + threshold).properties(
+    title="Ontario Bridge Condition Index Distribution",
+    width=550,
+    height=300
+)
+
+bci_plot
+```
+
+## Model Evaluation
+
+
+
+
+
+
+
+
+
+
+
 ```{python}
 # current_bci is dropped because the target was created from it (leakage).
 X_train = train_df.drop(columns=["rehab_soon", "current_bci"])
@@ -374,6 +566,33 @@ confusion
 
 # Discussion
 
+## Results
+
+### Exploratory Data Analysis
+
+The training dataset contains 2,073 Ontario bridges, of which 229 (11%) were classified as needing rehabilitation soon (BCI < 70). The remaining 1,844 bridges (89%) did not meet this threshold (Table 1).
+
+Bridge age appears to be associated with rehabilitation needs. Bridges requiring rehabilitation were older on average (56.2 years) than those not requiring rehabilitation (35.9 years), as shown in Table 2 and Figure 1. They also had a longer average time since major rehabilitation (31.3 versus 15.5 years).
+
+Rehabilitation rates varied across bridge materials (Table 3 and Figure 2). Among the five most common materials, reinforced cast-in-place concrete had a rehabilitation rate of 21%, followed by steel at 18%. Weathering steel had the lowest rate at 3%.
+
+Bridge length also differed between groups. Bridges requiring rehabilitation had a shorter average length (46.7 m) than those not requiring rehabilitation (72.6 m), as shown in Table 2. Figure 3 further illustrates the distributions of bridge lengths by rehabilitation status.
+
+Regional differences were also observed (Table 5). The Northwestern and Eastern regions had the highest proportions requiring rehabilitation (20% and 19%, respectively), compared with 6% in the Central region.
+
+Finally, Figure 4 shows that BCI values were concentrated primarily above the rehabilitation threshold of 70, consistent with the class imbalance observed in Table 1.
+
+### Model Performance
+
+Three classification models were evaluated using five-fold cross-validation: a most-frequent baseline, logistic regression, and an RBF support vector classifier (SVC). The RBF SVC achieved the highest mean validation F1 score (0.506), compared with 0.466 for logistic regression and 0.000 for the baseline.
+
+The selected RBF SVC achieved an F1 score of 0.521, recall of 0.816, precision of 0.383, and accuracy of 0.835 on the held-out test set.
+
+The confusion matrix showed that the model correctly identified 80 bridges requiring rehabilitation and 662 bridges not requiring rehabilitation. However, it missed 18 bridges requiring rehabilitation and incorrectly flagged 129 bridges that did not require rehabilitation.
+
+These results suggest that the model identifies most bridges requiring rehabilitation, although its relatively low precision indicates a substantial number of false-positive predictions.
+
+>>>>>>> 88b69b7c5ac165bbd47129e965aaf3635e690d09
 # References
 Harris, Charles R., K. Jarrod Millman, Stéfan J. van der Walt, et al. 2020. "Array Programming with NumPy." Nature 585: 357–362. https://doi.org/10.1038/s41586-020-2649-2.
 
