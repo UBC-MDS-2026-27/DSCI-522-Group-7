@@ -16,8 +16,8 @@ The final report can be found [here]([GitHub Pages link]) (HTML).
 First time running the project, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Quarto](https://quarto.org/docs/get-started/), then clone this repository and move into it:
 
 ```bash
-git clone https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7.git
-cd DSCI-522-Group-7
+git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
+cd DSCI-522-ontario-bridge-rehab-predictor
 ```
 
 Then run the following from the root of this repository to create the virtual environment:
@@ -51,5 +51,4 @@ We did not use an instruction file (such as a `CLAUDE.md`). Some example prompts
 The Ontario Bridge Rehabilitation Predictor report contained herein is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/). See [the license file](LICENSE.md) for more information. If re-using/re-mixing please provide attribution and link to this webpage. The software code contained within this repository is licensed under the MIT license. See [the license file](LICENSE.md) for more information.
 
 ## References
-Ontario Ministry of Transportation. 2021. "Bridge Conditions." Ontario Data Catalogue. https://data.ontario.ca/dataset/bridge-conditions.
-
+Ontario Ministry of Transportation. 2021. "Bridge Conditions." Dataset, last updated June 9, 2021. Ontario Data Catalogue. https://data.ontario.ca/dataset/bridge-conditions/resource/703cdf01-ff09-4b86-b017-6e8d87b11fd2.
