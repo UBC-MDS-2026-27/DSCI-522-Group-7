@@ -24,15 +24,15 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
 create the virtual environment from the root of the repository:
 
 ``` bash
-git clone https://github.com/UBC-MDS/DSCI_522_project-template-breast-cancer-predictor.git
-cd DSCI_522_project-template-breast-cancer-predictor
+git clone https://github.com/UBC-MDS-2026-27/DSCI-522-Group-7
+cd DSCI-522-Group-7
 uv sync
 ```
 
 To re-run the analysis and render the report:
 
 ``` bash
-uv run quarto render
+uv run quarto render src/bridge_health_report.qmd
 ```
 
 If your change needs a new Python package, add it with `uv add <package>`
@@ -88,11 +88,9 @@ the pull request themselves.
 
 ### Disclosure
 
-You must disclose whether AI was used in developing your pull request. The pull
-request template includes a disclosure checkbox; complete it for every pull request,
-including those where no AI tools were used. If AI was used, document which tool(s)
-and version(s), how they were used, and what code or text is AI generated. We will
-ask you to complete the disclosure before review.
+You must disclose whether AI was used in developing your pull request description. If AI was used, 
+document which tool(s) and version(s), how they were used, and what code or text is 
+AI generated. We will ask you to complete the disclosure before review.
 
 Disclosure helps reviewers give your contribution appropriate attention, and keeps
 review transparent.
