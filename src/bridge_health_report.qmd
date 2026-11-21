@@ -8,6 +8,7 @@ jupyter: python3
 ```{python}
 import os
 import pandas as pd
+import altair as alt
 import numpy as np
 import re
 import requests
@@ -27,6 +28,9 @@ from sklearn.metrics import f1_score, recall_score, precision_score, accuracy_sc
 ```
 
 # Summary
+
+Here we attempt to build a classification model that predicts whether an Ontario bridge needs rehabilitation soon, defined as having a Bridge Condition Index (BCI) below 70, the threshold of “good” condition, below which maintenance is usually scheduled within five years. We compared a baseline model, logistic regression and a radial basis function support vector classifier (RBF SVC) using cross-validation. On unseen test data, our final classifier, weighted RBF SVC, correctly identified 80 of the 98 bridges needing rehabilitation (recall of 0.82). However, only 38% of the bridges it flagged actually needed rehabilitation, giving an F1 score of 0.52. This means the model catches most bridges at risk but produces many false alarms, which would cost inspection time and money. Given these results, the model could help prioritize bridges for inspection, but should not replace inspections. Further work with more recent data and additional factors, such as traffic and climate, is needed before it could be used in practice.
+
 
 # Introduction
 
@@ -253,7 +257,7 @@ age_plot = alt.Chart(train_df).mark_boxplot().encode(
     ),
     y=alt.Y(
         "age:Q",
-        title="Bridge Age"
+        title="Bridge Age (years)"
     )
 ).properties(
     title="Ontario Bridge Rehabilitation Needs",
@@ -274,11 +278,11 @@ Figure 2: Percentage of Ontario bridges requiring rehabilitation among the five 
 top_materials = train_df["material"].value_counts().head(5).index
 material_df = train_df[train_df["material"].isin(top_materials)].copy()
 
-# Shorten material names for the graph
+# Shorten material names while preserving concrete types
 material_df["material_short"] = material_df["material"].replace({
-    "Reinforced Cast-In-Place Concrete": "Reinforced",
-    "Prestressed Precast Concrete": "Prestressed",
-    "Post-Tensioned Cast-In-Place Concrete": "Post-Tensioned"
+    "Reinforced Cast-In-Place Concrete": "Reinforced concrete (cast-in-place)",
+    "Prestressed Precast Concrete": "Prestressed concrete (precast)",
+    "Post-Tensioned Cast-In-Place Concrete": "Post-tensioned concrete (cast-in-place)"
 })
 
 # Create Figure 2
@@ -290,7 +294,7 @@ material_plot = alt.Chart(material_df).mark_bar().encode(
     ),
     y=alt.Y(
         "material_short:N",
-        title="Concrete Material",
+        title="Material",
         sort="-x"
     ),
     tooltip=[
@@ -358,7 +362,7 @@ violin_plot = alt.Chart(length_df).transform_density(
         legend=None
     )
 ).properties(
-    title=  "Ontario Bridge Length's Rehabilitation Status",
+    title="Ontario Bridge Length by Rehabilitation Status",
 
 
     width=200,
@@ -418,6 +422,16 @@ bci_plot
 ```
 
 ## Model Evaluation
+
+
+
+
+
+
+
+
+
+
 
 ```{python}
 # current_bci is dropped because the target was created from it (leakage).
