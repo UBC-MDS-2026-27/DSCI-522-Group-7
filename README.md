@@ -38,12 +38,12 @@ Rendering runs the whole analysis from scratch: it downloads the data again from
 - Python and packages listed in [`pyproject.toml`](pyproject.toml) (exact versions are locked in [`uv.lock`](uv.lock))
 
 ## AI use statement
-We used Anthropic [Claude](https://claude.ai) and OpenAI [ChatGPT](https://chatgpt.com) to help with this project, including debugging code, understanding and improving our data analysis and visualization code, brainstorming our modelling strategy, learning Git and GitHub workflows, and drafting and revising parts of the report. All AI-generated suggestions and text were reviewed, tested, and edited by the authors, who take full responsibility for the content of this repository.
+We used Anthropic [Claude Code](https://www.anthropic.com/claude-code) (Opus 5.5), Anthropic [Claude](https://claude.ai) (Opus 5.5), OpenAI [ChatGPT](https://chatgpt.com) (GPT-6), and Google [Gemini](https://gemini.google.com) to help with this project, including debugging code, understanding and improving our data analysis and visualization code, brainstorming our modelling strategy, learning Git and GitHub workflows, generating the column renaming in the data wrangling, formatting Markdown tables, and drafting and revising parts of the report. All AI-generated suggestions and text were reviewed, tested, and edited by the authors, who take full responsibility for the content of this repository.
 
 We did not use an instruction file (such as a `CLAUDE.md`). Some example prompts we used:
 
 - "Should I use grid search or random search for hyperparameter tuning?"
-- "Is F1 the best metric? Should I consider other things?"
+- "Create a python dictionary for the renaming of columns to snake_case."
 - "How do I resolve merge conflicts in my Quarto report without losing the EDA visualizations?"
 - "Walk me through how to do Table 1 step by step."
 
