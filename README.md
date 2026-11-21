@@ -2,8 +2,6 @@
 
 **Authors:** Catriona McIntosh, Jaeda Yurkiw, Jared Chuang & Rshan Hluf
 
-**HTML Report:** [View our published Quarto report](https://ubc-mds-2026-27.github.io/DSCI-522-ontario-bridge-rehab-predictor/)
-
 Data analysis project for DSCI 522 (Reproducible and Trustworthy Data Science Workflows); a course in the Master of Data Science program at the University of British Columbia.
 
 ## About
@@ -12,7 +10,7 @@ Here we attempt to build a classification model that predicts whether an Ontario
 The dataset used for this project comes from the Government of Ontario. It was sourced from the Data Catalogue and can be found [here](https://data.ontario.ca/dataset/bridge-conditions). The data set contains 5,053 structures: 2,993 bridges and 2,060 culverts. Each row represents a bridge or culvert and includes its structure name and important attributes such as material, structure type, year built, years of its last major and minor rehabilitation, length, width, region, last inspection date, current BCI, and the BCI from each year between 2000 and 2020. Ontario bridges are inspected every two years following the Ontario Structure Inspection Manual (OSIM). The results of each inspection are combined into the BCI, a single score that summarizes the condition of the bridge’s elements. A bridge that is brand new, or that has only recently become the Ministry of Transportation’s responsibility, may not have been inspected yet, so it may not have a BCI (Ontario Ministry of Transportation 2021). Because our target variable is defined using each bridge’s current BCI, the BCI is the key variable in this analysis.
 
 ## Report 
-The final report can be found [here]([GitHub Pages link]) (HTML).
+The final report can be found [here](https://ubc-mds-2026-27.github.io/DSCI-522-ontario-bridge-rehab-predictor/) (HTML).
 
 ## Usage 
 First time running the project, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Quarto](https://quarto.org/docs/get-started/), then clone this repository and move into it:
