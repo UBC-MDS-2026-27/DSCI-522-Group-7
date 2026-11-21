@@ -16,7 +16,7 @@ The final report can be found [here]([GitHub Pages link]) (HTML).
 First time running the project, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Quarto](https://quarto.org/docs/get-started/), then clone this repository and move into it:
 
 ```bash
-git clone git@github.com:UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
+git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
 cd DSCI-522-ontario-bridge-rehab-predictor
 ```
 

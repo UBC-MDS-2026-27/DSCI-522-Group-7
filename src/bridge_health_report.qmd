@@ -1,5 +1,5 @@
 ---
-title: "Title"
+title: "DSCI 522: Predicting whether Ontario bridges need near-term rehabilitation"
 author: "Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf"
 date: "2026/11/13"
 jupyter: python3
@@ -189,7 +189,7 @@ The hyperparameters of logistic regression and the RBF SVC were tuned using grid
 
 The F1 score was used to evaluate the models instead of accuracy. Because only about 11% of bridges need rehabilitation soon, the baseline achieves high accuracy without ever identifying a bridge that needs rehabilitation (a recall of 0). The F1 score balances recall and precision, so it only rewards models that actually find bridges at risk. The RBF SVC had the highest mean cross-validation F1 score (0.51, compared with 0.47 for logistic regression), with C = 1, gamma = 0.1, and balanced class weights. This final model was evaluated once on the test set.
 
-The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: requests (Reitz 2011), re (Van Rossum and Drake 2009), NumPy (Harris et al. 2020), pandas (McKinney 2010), Altair (VanderPlas et al. 2018) and scikit-learn (Pedregosa et al. 2011). The code used to perform the analysis and create this report can be found here: <http://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor>.
+The Python programming language (Van Rossum and Drake 2009) and the following Python packages were used to perform the analysis: requests (Reitz 2011), re (Van Rossum and Drake 2009), NumPy (Harris et al. 2020), pandas (McKinney 2010), Altair (VanderPlas et al. 2018) and scikit-learn (Pedregosa et al. 2011). The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/tree/main>.
 
 ```{python}
 # Split the data into training (70%) and test (30%) sets
@@ -215,7 +215,7 @@ table_1.columns = ["Number of bridges", "Proportions"]
 table_1
 ```
 
-Table 2: Average age, years since last major rehab, and size of bridges in the training data, and whether they need rehabilitation soon.
+Table 2: Average age, years since last major rehab, and size of bridges in the training data, by whether they need rehabilitation soon.
 ```{python}
 # Make Table 2 which shows if bridges that need rehabilitation are different from ones that don't in age, time since last rehab, and size.
 table_2 = train_df.groupby("rehab_soon")[["age", "years_since_last_rehab_major", "width_m", "length_m"]].mean().round(1)
@@ -239,7 +239,7 @@ table_3.columns = ["Number of bridges", "Proportion needing rehabilitation soon"
 table_3
 ```
 
-Table 4: Number of brudges and proportion needing rehabilitation soon in the training data, by structure type.
+Table 4: Number of bridges and proportion needing rehabilitation soon in the training data, by structure type.
 ```{python}
 # Make Table 4 which shows if a bridge needs rehabilitation soon depending on its structure type.
 table_4 = train_df.groupby("structure_type")["rehab_soon"].agg(["count", "mean"]).round(2)
