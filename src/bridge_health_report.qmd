@@ -421,18 +421,7 @@ bci_plot = (bci_density + threshold).properties(
 bci_plot
 ```
 
-## Model Evaluation
-
-
-
-
-
-
-
-
-
-
-
+## Modelling
 ```{python}
 # current_bci is dropped because the target was created from it (leakage).
 X_train = train_df.drop(columns=["rehab_soon", "current_bci"])
@@ -487,9 +476,6 @@ bridge_preprocessor = make_column_transformer(
      verbose_feature_names_out=False
 )
 ```
-
-# Results
-
 ```{python}
 models = {
     "Baseline (most frequent)": (
@@ -536,14 +522,15 @@ for name, (model, grid) in models.items():
         "Best settings": search.best_params_,
     })
 
-comparison = pd.DataFrame(rows).set_index("Model")
-comparison
+results = pd.DataFrame(rows).set_index("Model")
+best_name = results["Mean validation F1"].idxmax()
+best_model = grid_searches[best_name]
+
+comparison = results.drop(columns="Best settings").round(2)
 ```
 
 ```{python}
 # RBF SVM had highest f1 score
-best_model = grid_searches['RBF SVC']
-
 y_pred = best_model.predict(X_test)
 
 test_scores = pd.DataFrame({
@@ -551,9 +538,8 @@ test_scores = pd.DataFrame({
     "Recall": [recall_score(y_pred=y_pred, y_true=y_test)],
     "Precision": [precision_score(y_pred=y_pred, y_true=y_test)],
     "Accuracy": [accuracy_score(y_pred=y_pred, y_true=y_test)]
-},)
+}, index=["Test set"]).round(2)
 
-test_scores
 ```
 
 ```{python}
@@ -561,16 +547,12 @@ test_scores
 confusion = pd.crosstab(y_test, y_pred)
 confusion.index = ["Actually needs rehab: No", "Actually needs rehab: Yes"]
 confusion.columns = ["Predicted: No", "Predicted: Yes"]
-confusion
 ```
 
-# Discussion
 
-# References
+# Results
 
-## Results
-
-### Exploratory Data Analysis
+## Exploratory Data Analysis
 
 The training dataset contains 2,073 Ontario bridges, of which 229 (11%) were classified as needing rehabilitation soon (BCI < 70). The remaining 1,844 bridges (89%) did not meet this threshold (Table 1).
 
@@ -584,13 +566,34 @@ Regional differences were also observed (Table 5). The Northwestern and Eastern 
 
 Finally, Figure 4 shows that BCI values were concentrated primarily above the rehabilitation threshold of 70, consistent with the class imbalance observed in Table 1.
 
-### Model Performance
+## Model Performance
 
-Three classification models were evaluated using five-fold cross-validation: a most-frequent baseline, logistic regression, and an RBF support vector classifier (SVC). The RBF SVC achieved the highest mean validation F1 score (0.506), compared with 0.466 for logistic regression and 0.000 for the baseline.
+Three classification models were evaluated using five-fold cross-validation: a most-frequent baseline, logistic regression, and a radial basis function support vector classifier (RBF SVC). The RBF SVC achieved the highest mean validation F1 score (0.51), compared with 0.47 for logistic regression and 0 for the baseline (Table 6). Its best settings used balanced class weights, C = 1 and gamma = 0.1.
 
-The selected RBF SVC achieved an F1 score of 0.521, recall of 0.816, precision of 0.383, and accuracy of 0.835 on the held-out test set.
+Table 6: Mean training and validation F1 scores from five-fold cross-validation for each model, using the best hyperparameter settings found by grid search.
 
-The confusion matrix showed that the model correctly identified 80 bridges requiring rehabilitation and 662 bridges not requiring rehabilitation. However, it missed 18 bridges requiring rehabilitation and incorrectly flagged 129 bridges that did not require rehabilitation.
+```{python}
+comparison
+```
+
+The selected RBF SVC achieved an F1 score of 0.52, recall of 0.82, precision of 0.38, and accuracy of 0.83 on the held-out test set (Table 7).
+
+Table 7: Performance of the final RBF SVC model on the test set.
+
+```{python}
+test_scores
+```
+
+The confusion matrix (Table 8) showed that the model correctly identified 80 bridges requiring rehabilitation and 662 bridges not requiring rehabilitation. However, it missed 18 bridges requiring rehabilitation and incorrectly flagged 129 bridges that did not require rehabilitation.
+
+Table 8: Confusion matrix of the final model's predictions on the test set. Rows show whether a bridge actually needs rehabilitation soon; columns show the model's prediction.
+
+```{python}
+confusion
+```
 
 These results suggest that the model identifies most bridges requiring rehabilitation, although its relatively low precision indicates a substantial number of false-positive predictions.
 
+# Discussion
+
+# References
