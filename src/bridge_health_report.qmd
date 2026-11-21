@@ -375,11 +375,20 @@ confusion
 # Discussion
 
 # References
+Harris, Charles R., K. Jarrod Millman, Stéfan J. van der Walt, et al. 2020. "Array Programming with NumPy." Nature 585: 357–362. https://doi.org/10.1038/s41586-020-2649-2.
+
 Martinez, Pablo, Emad Mohamed, Osama Mohsen, et al. 2020. "Comparative Study of Data Mining Models for Prediction of Bridge Future Conditions." Journal of Performance of Constructed Facilities 34 (1): 04019108. https://doi.org/10.1061/(ASCE)CF.1943-5509.0001395.
+
+McKinney, Wes. 2010. "Data Structures for Statistical Computing in Python." In Proceedings of the 9th Python in Science Conference, edited by Stéfan van der Walt and Jarrod Millman, 56–61. https://doi.org/10.25080/Majora-92bf1922-00a.
 
 Office of the Auditor General of Ontario. 2021. "Value-for-Money Audit: Inspection and Maintenance of the Province’s Bridges and Culverts." Office of the Auditor General of Ontario. https://auditor.on.ca/en/content/annualreports/arreports/en21/AR_InspectBridges_en21.pdf.
 
 Ontario Ministry of Transportation. 2021. "Bridge Conditions." Dataset, last updated June 9, 2021. Ontario Data Catalogue. https://data.ontario.ca/dataset/bridge-conditions/resource/703cdf01-ff09-4b86-b017-6e8d87b11fd2.
 
+Pedregosa, Fabian, Gaël Varoquaux, Alexandre Gramfort, et al. 2011. "Scikit-learn: Machine Learning in Python." Journal of Machine Learning Research 12: 2825–2830.
 
+Reitz, Kenneth. 2011. "Requests: HTTP for Humans." https://requests.readthedocs.io/.
 
+Van Rossum, Guido, and Fred L. Drake. 2009. Python 3 Reference Manual. Scotts Valley, CA: CreateSpace.
+
+VanderPlas, Jacob, Brian E. Granger, Jeffrey Heer, et al. 2018. "Altair: Interactive Statistical Visualizations for Python." Journal of Open Source Software 3 (32): 1057. https://doi.org/10.21105/joss.01057.
