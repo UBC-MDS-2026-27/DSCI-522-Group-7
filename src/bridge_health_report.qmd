@@ -375,4 +375,11 @@ confusion
 # Discussion
 
 # References
+Martinez, Pablo, Emad Mohamed, Osama Mohsen, et al. 2020. "Comparative Study of Data Mining Models for Prediction of Bridge Future Conditions." Journal of Performance of Constructed Facilities 34 (1): 04019108. https://doi.org/10.1061/(ASCE)CF.1943-5509.0001395.
+
+Office of the Auditor General of Ontario. 2021. "Value-for-Money Audit: Inspection and Maintenance of the Province’s Bridges and Culverts." Office of the Auditor General of Ontario. https://auditor.on.ca/en/content/annualreports/arreports/en21/AR_InspectBridges_en21.pdf.
+
+Ontario Ministry of Transportation. 2021. "Bridge Conditions." Dataset, last updated June 9, 2021. Ontario Data Catalogue. https://data.ontario.ca/dataset/bridge-conditions/resource/703cdf01-ff09-4b86-b017-6e8d87b11fd2.
+
+
 
