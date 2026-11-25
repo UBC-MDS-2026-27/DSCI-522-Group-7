@@ -1,3 +1,4 @@
 snowflake.log
 .DS_Store
-.venv/*_files/
+.venv/
+*_files/
