@@ -13,24 +13,33 @@ The dataset used for this project comes from the Government of Ontario. It was s
 The final report can be found [here](https://ubc-mds-2026-27.github.io/DSCI-522-ontario-bridge-rehab-predictor/) (HTML).
 
 ## Usage 
-First time running the project, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Quarto](https://quarto.org/docs/get-started/), then clone this repository and move into it:
+We run the analysis in a Docker container, so everyone uses the same software and package versions. The image is published on Docker Hub at [link].
 
+# Setup
+First time running the project, install [git](https://git-scm.com/install/) and install and launch [Docker](https://www.docker.com/get-started/), then clone this repository and move into it:
 ```bash
 git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
 cd DSCI-522-ontario-bridge-rehab-predictor
 ```
+Run all the commands below from the root of this repository.
 
-Then run the following from the root of this repository to create the virtual environment:
+# 1. Make an ssh key 
+If you don't have an ssh key yet, make one and press Enter at each question:
 ```bash
-uv sync
+ssh-keygen -t ed25519
+```
+The container lets you log in with this key. If you skip this step, Docker makes a folder named `~/.ssh/id_ed25519.pub` instead, and connecting to the container over ssh fails until you delete that folder and make the key.
+
+# 2. Download the image 
+```bash
+docker compose pull
 ```
 
-To run the analysis and render the report, run the following from the root of this repository:
+# 3. Run the analysis and render the report
 ```bash
-uv run quarto render src/bridge_health_report.qmd
+docker compose run --rm analysis-env uv run quarto render src/bridge_health_report.qmd
 ```
-
-Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `src/bridge_health_report.html`, replacing the version in this repository.
+Rendering runs the whole analysis from scratch: it downloads the data again from the UCI Machine Learning Repository (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to src/bridge_health_report.html, replacing the versions in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
 
 ## Dependencies
 - [uv](https://docs.astral.sh/uv/) (version 0.12 or higher)
