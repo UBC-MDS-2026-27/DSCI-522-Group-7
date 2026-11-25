@@ -35,10 +35,6 @@ To re-run the analysis and render the report:
 uv run quarto render src/bridge_health_report.qmd
 ```
 
-If your change needs a new Python package, add it with `uv add <package>`
-(this pins an exact version in `pyproject.toml` and updates `uv.lock`),
-and commit both files.
-
 ### Adding or updating a package
 Create a new branch, and add the package with `uv add <package>==<version>`. This pins the version in `pyproject.toml` and
 updates `uv.lock`. Then commit the changed `pyproject.toml` and `uv.lock` together and push them.
