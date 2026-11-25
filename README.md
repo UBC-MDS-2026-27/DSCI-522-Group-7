@@ -41,10 +41,12 @@ docker compose run --rm analysis-env uv run quarto render src/bridge_health_repo
 ```
 Rendering runs the whole analysis from scratch: it downloads the data again from the UCI Machine Learning Repository (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to src/bridge_health_report.html, replacing the versions in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
 
+## Contributing
+Want to change the analysis, add a package, or update the published report? See [CONTRIBUTING.md]
+
 ## Dependencies
-- [uv](https://docs.astral.sh/uv/) (version 0.12 or higher)
-- [Quarto](https://quarto.org/) (version 1.10 or higher)
-- Python and packages listed in [`pyproject.toml`](pyproject.toml) (exact versions are locked in [`uv.lock`](uv.lock))
+- [Docker](https://www.docker.com/)
+- The image is built from the [Dockerfile] in this repository. It installs Quarto, uv, and Python with the packages listed in [pyproject.toml] (exact versions are locked in [uv.lock]).
 
 ## AI use statement
 We used Anthropic [Claude Code](https://www.anthropic.com/claude-code) (Opus 5.5), Anthropic [Claude](https://claude.ai) (Opus 5.5), OpenAI [ChatGPT](https://chatgpt.com) (GPT-6), and Google [Gemini](https://gemini.google.com) to help with this project, including debugging code, understanding and improving our data analysis and visualization code, brainstorming our modelling strategy, learning Git and GitHub workflows, generating the column renaming in the data wrangling, formatting Markdown tables, and drafting and revising parts of the report. All AI-generated suggestions and text were reviewed, tested, and edited by the authors, who take full responsibility for the content of this repository.
