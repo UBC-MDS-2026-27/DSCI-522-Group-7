@@ -3,6 +3,9 @@ title: "DSCI 522: Predicting whether Ontario bridges need near-term rehabilitati
 author: "Catriona McIntosh, Jaeda Yurkiw, Jared Chuang, Rshan Hluf"
 date: "2026/11/13"
 jupyter: python3
+format:
+  html:
+    embed-resources: true
 ---
 
 ```{python}
