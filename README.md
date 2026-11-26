@@ -13,9 +13,9 @@ The dataset used for this project comes from the Government of Ontario. It was s
 The final report can be found [here](https://ubc-mds-2026-27.github.io/DSCI-522-ontario-bridge-rehab-predictor/) (HTML).
 
 ## Usage 
-We run the analysis in a Docker container, so everyone uses the same software and package versions. The image is published on Docker Hub at [link].
+We run the analysis in a Docker container, so everyone uses the same software and package versions. The image is published on Docker Hub at [jaredc28/dsci-522-ontario-bridge-rehab-predictor](https://hub.docker.com/r/jaredc28/dsci-522-ontario-bridge-rehab-predictor).
 
-# Setup
+### Setup
 First time running the project, install [git](https://git-scm.com/install/) and install and launch [Docker](https://www.docker.com/get-started/), then clone this repository and move into it:
 ```bash
 git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
@@ -23,30 +23,30 @@ cd DSCI-522-ontario-bridge-rehab-predictor
 ```
 Run all the commands below from the root of this repository.
 
-# 1. Make an ssh key 
+### 1. Make an ssh key 
 If you don't have an ssh key yet, make one and press Enter at each question:
 ```bash
 ssh-keygen -t ed25519
 ```
 The container lets you log in with this key. If you skip this step, Docker makes a folder named `~/.ssh/id_ed25519.pub` instead, and connecting to the container over ssh fails until you delete that folder and make the key.
 
-# 2. Download the image 
+### 2. Download the image 
 ```bash
 docker compose pull
 ```
 
-# 3. Run the analysis and render the report
+### 3. Run the analysis and render the report
 ```bash
 docker compose run --rm analysis-env uv run quarto render src/bridge_health_report.qmd
 ```
-Rendering runs the whole analysis from scratch: it downloads the data again from the UCI Machine Learning Repository (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to src/bridge_health_report.html, replacing the versions in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
+Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `s`rc/bridge_health_report.html`, replacing the version in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
 
 ## Contributing
-Want to change the analysis, add a package, or update the published report? See [CONTRIBUTING.md]
+Want to change the analysis, add a package, or update the published report? See [CONTRIBUTING.md](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/CONTRIBUTING.md).
 
 ## Dependencies
 - [Docker](https://www.docker.com/)
-- The image is built from the [Dockerfile] in this repository. It installs Quarto, uv, and Python with the packages listed in [pyproject.toml] (exact versions are locked in [uv.lock]).
+- The image is built from the [Dockerfile](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/Dockerfile) in this repository. It installs Quarto, uv, and Python with the packages listed in [pyproject.toml](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/pyproject.toml) (exact versions are locked in [uv.lock](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/uv.lock)).
 
 ## AI use statement
 We used Anthropic [Claude Code](https://www.anthropic.com/claude-code) (Opus 5.5), Anthropic [Claude](https://claude.ai) (Opus 5.5), OpenAI [ChatGPT](https://chatgpt.com) (GPT-6), and Google [Gemini](https://gemini.google.com) to help with this project, including debugging code, understanding and improving our data analysis and visualization code, brainstorming our modelling strategy, learning Git and GitHub workflows, generating the column renaming in the data wrangling, formatting Markdown tables, and drafting and revising parts of the report. All AI-generated suggestions and text were reviewed, tested, and edited by the authors, who take full responsibility for the content of this repository.
