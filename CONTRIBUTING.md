@@ -19,25 +19,69 @@ bug, create an associated issue and illustrate the bug with a minimal
 
 ### Setting up the project
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
-[Quarto](https://quarto.org/docs/get-started/), then clone the repository and
-create the virtual environment from the root of the repository:
+Follow the [README setup instructions](README.md#usage) to clone the repository, set up your SSH key, and download the Docker image using `docker compose pull`. You do not need to install Python packages or Quarto on your own computer.
 
-``` bash
-git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
-cd DSCI-522-ontario-bridge-rehab-predictor
-uv sync
+### Working inside Docker with Positron
+
+1. Install [Positron](https://positron.posit.co/) and the Remote SSH extension.
+2. Follow the README instructions to start the Docker container using `docker compose up -d`.
+3. Open Positron and press `Cmd + Shift + P` (Mac) or `Ctrl + Shift + P` (Windows/Linux).
+4. Select `Remote-SSH: Connect to Host` and connect to your configured Docker SSH host.
+5. Open `/workspace` in Positron and trust the folder.
+6. Open a terminal in Positron and check your Git identity:
+
+   ```bash
+   git config user.name
+   git config user.email
+   ```
+
+   If either is missing, configure it using your own name and email:
+
+   ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "your-email@example.com"
+   ```
+
+7. Select `/opt/venv/bin/python` as the Python interpreter.
+8. You can now edit and run the project inside the Docker container.
+
+**Troubleshooting:**
+
+- **Connection refused:** Check that Docker Desktop is running and the container has started with `docker compose up -d`.
+- **Permission denied (publickey):** Check your SSH key and confirm that its public key is authorized in the container.
+- **Python interpreter unavailable:** Select `/opt/venv/bin/python` manually.
+- **Files missing:** Open `/workspace` instead of a folder on your local computer.
+- **Positron features disabled:** Trust the workspace and install the Python extension in the remote environment if needed.
+
+### Adding or updating Python packages
+
+1. Create a new Git branch for your changes.
+2. Add or update the package using `uv add --bounds exact <package-name>`.
+3. Confirm that `pyproject.toml` and `uv.lock` have been updated.
+4. Commit and push the changes, then open a pull request for review.
+5. After the PR is merged, wait for GitHub Actions to publish the updated Docker image.
+6. Update the image tag in `docker-compose.yml` to the newly published SHA tag and merge that change.
+7. Run `git pull` and `docker compose pull` to download the updated environment.
+
+### Publishing the report
+
+After updating the analysis, render the report inside the container:
+
+```bash
+docker compose run --rm analysis-env uv run quarto render src/bridge_health_report.qmd
 ```
 
-To re-run the analysis and render the report:
+Copy the rendered HTML report to the GitHub Pages location:
 
-``` bash
-uv run quarto render src/bridge_health_report.qmd
+```bash
+cp src/bridge_health_report.html docs/index.html
 ```
 
-If your change needs a new Python package, add it with `uv add <package>`
-(this pins an exact version in `pyproject.toml` and updates `uv.lock`),
-and commit both files.
+Commit and push the updated report through a pull request. Once merged, GitHub Pages will publish the new version.
+
+For the full setup and rendering instructions, see the [README](README.md#usage).
+
+
 
 ### Pull request process
 
