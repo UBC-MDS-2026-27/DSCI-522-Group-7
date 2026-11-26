@@ -39,7 +39,7 @@ docker compose pull
 ```bash
 docker compose run --rm analysis-env uv run quarto render src/bridge_health_report.qmd
 ```
-Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `s`rc/bridge_health_report.html`, replacing the version in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
+Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `src/bridge_health_report.html`, replacing the version in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
 
 ## Contributing
 Want to change the analysis, add a package, or update the published report? See [CONTRIBUTING.md](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/CONTRIBUTING.md).
