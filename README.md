@@ -16,7 +16,16 @@ The final report can be found [here](https://ubc-mds-2026-27.github.io/DSCI-522-
 We run the analysis in a Docker container, so everyone uses the same software and package versions. The image is published on Docker Hub at [jaredc28/dsci-522-ontario-bridge-rehab-predictor](https://hub.docker.com/r/jaredc28/dsci-522-ontario-bridge-rehab-predictor).
 
 ### Setup
-First time running the project, install [git](https://git-scm.com/install/) and install and launch [Docker](https://www.docker.com/get-started/), then clone this repository and move into it:
+First time running the project, install [git](https://git-scm.com/install/) and install and launch [Docker](https://www.docker.com/get-started/).
+
+On Windows, Docker Desktop requires the Windows Subsystem for Linux (WSL). To install it, open PowerShell as an administrator and run:
+
+```bash
+wsl --install
+```
+
+Then clone this repository and move into it:
+
 ```bash
 git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
 cd DSCI-522-ontario-bridge-rehab-predictor
@@ -24,7 +33,7 @@ cd DSCI-522-ontario-bridge-rehab-predictor
 Run all the commands below from the root of this repository.
 
 ### 1. Make an ssh key 
-If you don't have an ssh key yet, make one and press Enter at each question:
+You need an ssh key named `id_ed25519` in particular, so run this even if you already have a different ssh key. Press Enter at each question:
 ```bash
 ssh-keygen -t ed25519
 ```
@@ -34,6 +43,7 @@ The container lets you log in with this key. If you skip this step, Docker makes
 
 
 ### 2. Download the image 
+Make sure Docker Desktop is open and running, then download the project's image:
 ```bash
 docker compose pull
 ```
@@ -49,6 +59,7 @@ Want to change the analysis, add a package, or update the published report? See 
 
 ## Dependencies
 - [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/install/) (on Windows, this includes Git Bash, which you need to run the comands in this README)
 - The image is built from the [Dockerfile](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/Dockerfile) in this repository. It installs Quarto, uv, and Python with the packages listed in [pyproject.toml](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/pyproject.toml) (exact versions are locked in [uv.lock](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/uv.lock)).
 
 ## AI use statement
