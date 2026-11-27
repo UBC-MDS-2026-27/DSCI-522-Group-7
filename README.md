@@ -28,7 +28,10 @@ If you don't have an ssh key yet, make one and press Enter at each question:
 ```bash
 ssh-keygen -t ed25519
 ```
+If it says the key already exists and asks to overwrite, type `n`. You already have a key and can move on.
+
 The container lets you log in with this key. If you skip this step, Docker makes a folder named `~/.ssh/id_ed25519.pub` instead, and connecting to the container over ssh fails until you delete that folder and make the key.
+
 
 ### 2. Download the image 
 ```bash
