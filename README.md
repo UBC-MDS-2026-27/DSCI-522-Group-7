@@ -13,29 +13,54 @@ The dataset used for this project comes from the Government of Ontario. It was s
 The final report can be found [here](https://ubc-mds-2026-27.github.io/DSCI-522-ontario-bridge-rehab-predictor/) (HTML).
 
 ## Usage 
-First time running the project, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [Quarto](https://quarto.org/docs/get-started/), then clone this repository and move into it:
+We run the analysis in a Docker container, so everyone uses the same software and package versions. The image is published on Docker Hub at [jaredc28/dsci-522-ontario-bridge-rehab-predictor](https://hub.docker.com/r/jaredc28/dsci-522-ontario-bridge-rehab-predictor).
+
+### Setup
+First time running the project, install [git](https://git-scm.com/install/) and install and launch [Docker](https://www.docker.com/get-started/).
+
+On Windows, Docker Desktop requires the Windows Subsystem for Linux (WSL). To install it, open PowerShell as an administrator and run:
+
+```bash
+wsl --install
+```
+
+Then clone this repository and move into it:
 
 ```bash
 git clone https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor.git
 cd DSCI-522-ontario-bridge-rehab-predictor
 ```
+Run all the commands below from the root of this repository.
 
-Then run the following from the root of this repository to create the virtual environment:
+### 1. Make an ssh key 
+You need an ssh key named `id_ed25519` in particular, so run this even if you already have a different ssh key. Press Enter at each question:
 ```bash
-uv sync
+ssh-keygen -t ed25519
+```
+If it says the key already exists and asks to overwrite, type `n`. You already have a key and can move on.
+
+The container lets you log in with this key. If you skip this step, Docker makes a folder named `~/.ssh/id_ed25519.pub` instead, and connecting to the container over ssh fails until you delete that folder and make the key.
+
+
+### 2. Download the image 
+Make sure Docker Desktop is open and running, then download the project's image:
+```bash
+docker compose pull
 ```
 
-To run the analysis and render the report, run the following from the root of this repository:
+### 3. Run the analysis and render the report
 ```bash
-uv run quarto render src/bridge_health_report.qmd
+docker compose run --rm analysis-env uv run quarto render src/bridge_health_report.qmd
 ```
+Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `src/bridge_health_report.html`, replacing the version in this repository. Because of `--rm`, the container is removed by itself when the render finishes, so there is nothing to stop afterwards.
 
-Rendering runs the whole analysis from scratch: it downloads the data again from the Ontario Data Catalogue (so you need an internet connection), and overwrites the files in `data/raw/` and `data/processed/`. The rendered report is written to `src/bridge_health_report.html`, replacing the version in this repository.
+## Contributing
+Want to change the analysis, add a package, or update the published report? See [CONTRIBUTING.md](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/CONTRIBUTING.md).
 
 ## Dependencies
-- [uv](https://docs.astral.sh/uv/) (version 0.12 or higher)
-- [Quarto](https://quarto.org/) (version 1.10 or higher)
-- Python and packages listed in [`pyproject.toml`](pyproject.toml) (exact versions are locked in [`uv.lock`](uv.lock))
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/install/) (on Windows, this includes Git Bash, which you need to run the comands in this README)
+- The image is built from the [Dockerfile](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/Dockerfile) in this repository. It installs Quarto, uv, and Python with the packages listed in [pyproject.toml](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/pyproject.toml) (exact versions are locked in [uv.lock](https://github.com/UBC-MDS-2026-27/DSCI-522-ontario-bridge-rehab-predictor/blob/main/uv.lock)).
 
 ## AI use statement
 We used Anthropic [Claude Code](https://www.anthropic.com/claude-code) (Opus 5.5), Anthropic [Claude](https://claude.ai) (Opus 5.5), OpenAI [ChatGPT](https://chatgpt.com) (GPT-6), and Google [Gemini](https://gemini.google.com) to help with this project, including debugging code, understanding and improving our data analysis and visualization code, brainstorming our modelling strategy, learning Git and GitHub workflows, generating the column renaming in the data wrangling, formatting Markdown tables, and drafting and revising parts of the report. All AI-generated suggestions and text were reviewed, tested, and edited by the authors, who take full responsibility for the content of this repository.
