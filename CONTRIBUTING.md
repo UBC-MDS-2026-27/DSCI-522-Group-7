@@ -35,9 +35,28 @@ To re-run the analysis and render the report:
 uv run quarto render src/bridge_health_report.qmd
 ```
 
-If your change needs a new Python package, add it with `uv add <package>`
-(this pins an exact version in `pyproject.toml` and updates `uv.lock`),
-and commit both files.
+### Adding or updating a package
+Create a new branch, and add the package with `uv add <package>==<version>`. This pins the version in `pyproject.toml` and
+updates `uv.lock`. Then commit the changed `pyproject.toml` and `uv.lock` together and push them.
+
+GitHub Actions then builds a new image, publishes it to Docker Hub, and commits the new `sha-` tag to the `image:` line of `docker-compose.yml` on your branch. You can follow the build in the **Actions** tab. When it finishes, pull that
+commit and download the new image:
+
+``` bash
+git pull
+docker compose pull
+```
+
+Then merge the branch into `main` in a pull request. 
+
+### Publishing the report
+The report on GitHub Pages is a copy of the rendered report, stored in `docs/index.html`. Rendering alone does not update the website, so each time you re-render the report, copy it into `docs/` and commit both files and push:
+
+``` bash
+cp src/bridge_health_report.html docs/index.html
+```
+
+The website updates a minute or two after the pull request is merged into `main`.
 
 ### Pull request process
 
